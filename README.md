@@ -68,55 +68,104 @@ cp .env.example .env
 - **옵션 관리**: 메뉴 옵션 추가/관리
 - **실시간 미리보기**: 키오스크에 표시될 내용 실시간 확인
 
-## 백엔드
+## 백엔드 (Supabase)
 
-백엔드는 별도 저장소에서 관리됩니다.
+백엔드는 **Supabase**를 사용하여 별도 서버 없이 운영됩니다.
 
-**저장소**: [MALO-kiosk_admin_back](https://github.com/hyeonseo8822/MALO-kiosk_admin_back)
+**Supabase 대시보드**: https://supabase.com/dashboard
 
-### 필수 API 엔드포인트
+### Supabase 구성
 
-#### 인증 (Auth)
-- `POST /api/auth/login` - 로그인
-- `POST /api/auth/signup` - 회원가입
+#### 1. 데이터베이스 테이블
 
-#### 메뉴 (Menu)
-- `GET /api/menu` - 메뉴 목록 조회
-- `POST /api/menu` - 메뉴 추가
-- `PUT /api/menu/:id` - 메뉴 수정
-- `DELETE /api/menu/:id` - 메뉴 삭제
+- **profiles** - 사용자 프로필
+- **menu_items** - 메뉴 항목
+- **banners** - 첫화면 배너
+- **options** - 메뉴 옵션
 
-#### 첫화면 (Banners)
-- `GET /api/banners` - 배너 목록 조회
-- `POST /api/banners/upload` - 배너 업로드
+#### 2. 인증 (Auth)
+- Supabase Auth 사용
+- 이메일/패스워드 로그인
 
-#### 옵션 (Options)
-- `GET /api/options` - 옵션 목록 조회
-- `POST /api/options` - 옵션 추가
-- `PUT /api/options/:id` - 옵션 수정
-- `DELETE /api/options/:id` - 옵션 삭제
+#### 3. 파일 스토리지 (Storage)
+- 배너 이미지 저장소: `banners` 버킷
+
+### Supabase 설정 방법
+
+1. [Supabase](https://supabase.com) 회원가입
+2. 새 프로젝트 생성
+3. 프로젝트 설정에서 API 키 복사:
+   - Project URL
+   - Anon Public Key
+4. `.env` 파일에 설정:
+   ```
+   VITE_SUPABASE_URL=your-project-url
+   VITE_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+### SQL 스크립트 (Supabase SQL 에디터에서 실행)
+
+```sql
+-- Profiles 테이블
+CREATE TABLE profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id),
+  name TEXT,
+  email TEXT UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Menu Items 테이블
+CREATE TABLE menu_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  price TEXT,
+  image_url TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Banners 테이블
+CREATE TABLE banners (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  position INTEGER,
+  image_url TEXT,
+  file_name TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Options 테이블
+CREATE TABLE options (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  price TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ## API 연동
 
-프론트엔드에서는 `src/utils/api.js`에 정의된 함수들을 사용하여 백엔드 API와 통신합니다.
+프론트엔드에서는 `src/utils/api.js`에 정의된 Supabase 함수들을 사용합니다.
 
 ### 사용 예시
 
 ```javascript
-import { loginUser, getMenuItems } from './utils/api';
+import { loginUser, getMenuItems, uploadBanner } from './utils/api';
 
 // 로그인
 const result = await loginUser('admin@example.com', 'password123');
 if (result.success) {
   console.log('로그인 성공:', result.data);
-} else {
-  console.error('로그인 실패:', result.error);
 }
 
 // 메뉴 조회
 const menuResult = await getMenuItems();
 if (menuResult.success) {
   console.log('메뉴:', menuResult.data);
+}
+
+// 배너 업로드
+const bannerResult = await uploadBanner(file, 1);
+if (bannerResult.success) {
+  console.log('배너 업로드 성공:', bannerResult.data);
 }
 ```
 

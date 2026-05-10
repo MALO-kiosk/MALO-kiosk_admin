@@ -2,22 +2,23 @@
 
 ## 🎯 프로젝트 개요
 
-MALO 키오스크 관리자 시스템으로, 프론트엔드와 백엔드로 구성됩니다.
+MALO 키오스크 관리자 시스템 **프론트엔드** (Supabase 백엔드 사용)
 
-- **프론트엔드**: React + Vite (현재 저장소)
-- **백엔드**: Node.js/Express (별도 저장소)
+- **프론트엔드**: React + Vite
+- **백엔드**: Supabase (서버리스)
 
 ## 📁 저장소 정보
 
 ### 프론트엔드
-- **GitHub**: https://github.com/hyeonseo8822/MALO-kiosk_admin_front
+- **GitHub**: https://github.com/hyeonseo8822/MALO-kiosk_admin
 - **위치**: `MaloAdmin_frontend/`
-- **기술**: React 19, Vite, React Router v7
+- **기술**: React 19, Vite, React Router v7, Supabase
 
 ### 백엔드
-- **GitHub**: https://github.com/hyeonseo8822/MALO-kiosk_admin_back
-- **위치**: `MaloAdmin_backend/`
-- **기술**: Node.js, Express (예상)
+- **플랫폼**: Supabase (서버리스)
+- **DB**: PostgreSQL
+- **Auth**: Supabase Auth
+- **Storage**: Supabase Storage
 
 ## 🚀 빠른 시작
 
@@ -35,20 +36,22 @@ npm run dev
 # 브라우저에서 http://localhost:5173 접속
 ```
 
-### 백엔드 연동 설정
+### Supabase 연동 설정
 
-`.env` 파일을 생성하여 백엔드 URL 설정:
-
+1. [Supabase](https://supabase.com) 가입
+2. 프로젝트 생성
+3. API 키 복사:
+   - Project URL
+   - Anon Public Key
+4. `.env` 파일 생성:
 ```bash
 cp .env.example .env
 ```
-
-`.env` 파일 수정:
+5. 파일 수정:
 ```
-VITE_API_URL=http://localhost:5000/api
+VITE_SUPABASE_URL=your-project-url
+VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
-
-> 백엔드가 5000번 포트에서 실행된다고 가정
 
 ## 📋 페이지 목록
 
@@ -63,24 +66,24 @@ VITE_API_URL=http://localhost:5000/api
 
 ## 🔧 개발 중 필요한 작업
 
-### 1. 로그인 통합
-- [ ] 백엔드 login API와 연동
-- [ ] JWT 토큰 저장소 설정
-- [ ] 인증 상태 관리 (Context/Redux)
+### 1. Supabase 설정
+- [ ] Supabase 프로젝트 생성
+- [ ] SQL 스크립트 실행 (테이블 생성)
+- [ ] Storage 버킷 생성 (banners)
+- [ ] RLS (Row Level Security) 설정
+- [ ] API 키 복사 및 `.env` 파일 설정
+
+### 2. 인증 통합
+- [ ] Supabase Auth 로그인 기능 테스트
+- [ ] JWT 토큰 저장/관리
+- [ ] 세션 유지 로직
 - [ ] 토큰 만료 처리
 
-### 2. 데이터 관리
-- [ ] 메뉴 데이터 API 연동
-- [ ] 옵션 데이터 API 연동
-- [ ] 배너 이미지 업로드 API 연동
-- [ ] 상태 관리 (Context 또는 상태 관리 라이브러리)
-
-### 3. 페이지 기능 완성
-- [ ] LoginPage: 실제 인증 로직
-- [ ] SignUpPage: 회원가입 API 호출
-- [ ] FirstPage: 배너 이미지 업로드/관리
-- [ ] MenuPage: 메뉴 CRUD 완성
-- [ ] OptionPage: 옵션 CRUD 완성
+### 3. 데이터 관리
+- [ ] 메뉴 CRUD 페이지 완성
+- [ ] 옵션 CRUD 페이지 완성
+- [ ] 배너 이미지 업로드/삭제
+- [ ] 실시간 데이터 동기화
 
 ### 4. UI/UX 개선
 - [ ] 로딩 상태 표시
@@ -89,10 +92,9 @@ VITE_API_URL=http://localhost:5000/api
 - [ ] 반응형 디자인 검증
 
 ### 5. 배포 준비
-- [ ] 환경 변수 설정 (프로덕션)
+- [ ] 프로덕션 환경 변수 설정
 - [ ] 빌드 및 테스트
-- [ ] CI/CD 파이프라인 구성
-- [ ] 배포 서버 설정
+- [ ] Vercel/Netlify 배포 설정
 
 ## 🔌 API 연동 시작하기
 
