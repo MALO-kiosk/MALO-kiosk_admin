@@ -1,18 +1,46 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './css/LoginPage.css';
+import { loginUser } from '../utils/api';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const handleLogin = () => {
-        if (email === 'root' && password === '1234') {
-            setError(false);
-            alert('로그인 성공!');
-            // 여기에 로그인 성공 후 이동할 페이지 로직 추가 (예: navigate('/menu'))
-        } else {
-            setError(true);
+    const handleLogin = async () => {
+        if (!email || !password) {
+            setError('이메일과 비밀번호를 입력해주세요.');
+            return;
+        }
+
+        setLoading(true);
+        setError('');
+
+        try {
+            const result = await loginUser(email, password);
+            
+            if (result.success) {
+                setError('');
+                alert('로그인 성공!');
+                // 메뉴 페이지로 이동
+                navigate('/menu');
+            } else {
+                setError('이메일 또는 비밀번호가 올바르지 않습니다.');
+            }
+        } catch (err) {
+            setError('로그인 중 오류가 발생했습니다.');
+            console.error('Login error:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleLogin();
         }
     };
 
@@ -24,11 +52,13 @@ const LoginPage = () => {
             <div className="login-input-group">
                 <div className="login-input-wrapper">
                     <input 
-                        type="text" 
+                        type="email" 
                         placeholder="email" 
                         className={`login-input ${error ? 'error' : ''}`}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        disabled={loading}
                     />
                     <img 
                         src="/img/majesticons_mail-line.svg" 
@@ -44,6 +74,8 @@ const LoginPage = () => {
                         className={`login-input ${error ? 'error' : ''}`}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        disabled={loading}
                     />
                     <img 
                         src="/img/prime_lock.svg" 
@@ -52,9 +84,15 @@ const LoginPage = () => {
                     />
                 </div>
 
-                {error && <p className="error-message">* 아이디 / 비밀번호를 확인해주세요.</p>}
+                {error && <p className="error-message">* {error}</p>}
 
-                <button className="login-button" onClick={handleLogin}>log in</button>
+                <button 
+                    className="login-button" 
+                    onClick={handleLogin}
+                    disabled={loading}
+                >
+                    {loading ? '로그인 중...' : 'log in'}
+                </button>
             </div>
             
             <a href="/signup" className="create-account-link">create an account</a>
