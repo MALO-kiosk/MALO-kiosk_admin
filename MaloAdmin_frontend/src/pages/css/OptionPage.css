@@ -1,0 +1,141 @@
+
+.option-page .main-layout {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.option-page .home-preview-frame {
+    display: inline-block;
+    border: 35px solid #656666;
+    border-radius: 30px;
+    background: #656666;
+    line-height: 0;
+    position: relative;
+}
+
+.option-page .home-preview-img {
+    width: 320px;
+    height: 569px;
+    border-radius: 0;
+}
+
+.option-page .kiosk-ad-display {
+    position: absolute;
+    top: 6%;
+    left: 0;
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.option-page .kiosk-ad-preview-item {
+    width: 100%;
+    height: 82%;
+    object-fit: cover;
+}
+
+.option-page .option-management-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-left: 60px;
+}
+
+.option-page .option-add-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.option-page .option-add-title {
+    position: absolute;
+    top: -46px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: #1F1F1F;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.option-page .option-add-card {
+    width: 350px;
+    height: 385px;
+    background: #FFF;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0 30px 0;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.option-page .option-form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.option-page .option-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.option-page .option-label {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    color: #000;
+    margin-bottom: 8px;
+}
+
+.option-page .option-input {
+    width: 100%;
+    height: 50px;
+    background: #F3F3F3;
+    border-radius: 8px;
+    border: none;
+    padding: 0 8px;
+    box-sizing: border-box;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 13px;
+    color: #000;
+}
+
+.option-page .option-input:focus {
+    outline: none;
+}
+
+.option-page .option-add-button {
+    width: 80%;
+    height: 60px;
+    background: #4880EE;
+    color: #FFF;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    border-radius: 5px;
+    border: none;
+    margin-top: auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.option-page .option-add-button:hover {
+    background: #3A66B3;
+}

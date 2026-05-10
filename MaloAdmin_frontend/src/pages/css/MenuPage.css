@@ -1,0 +1,341 @@
+
+.menu-page .main-layout {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 80px;
+}
+
+.menu-page .menu-control-container {
+    position: absolute; /* 프레임 위치를 밀지 않고 상단에 배치 */
+    top: -46px;
+    left: 0;
+    width: 390px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.menu-page .menu-control-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0px 0;
+    cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+    background: transparent;
+}
+
+.menu-page .menu-control-dropdown {
+    top: 100%; /* 메인 텍스트 바로 아래 */
+    left: 0;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 6px;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.menu-page .menu-control-sub-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 8px 0;
+    cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    color: #000;
+    background: #ffffff;
+}
+
+.menu-page .menu-control-sub-item:hover {
+    background: #f5f7fb;
+    font-weight: 700;
+}
+
+.menu-page .control-arrow {
+    width: 14px;
+    height: auto;
+    margin-left: 8px;
+}
+
+.menu-page .home-preview-frame {
+    display: inline-block;
+    border: 35px solid #656666;
+    border-radius: 30px;
+    background: #656666;
+    line-height: 0;
+    position: relative;
+}
+
+.menu-page .home-preview-img {
+    width: 320px;
+    height: 569px;
+    border-radius: 0;
+}
+
+.menu-page .kiosk-ad-display {
+    position: absolute;
+    top: 6%;
+    left: 0;
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.menu-page .kiosk-ad-preview-item {
+    width: 100%;
+    height: 82%;
+    object-fit: cover;
+}
+
+.menu-page .menu-management-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.menu-page .menu-list-section {
+    width: 230px;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-page .menu-list-scroll {
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 5px; /* 스크롤바 공간 */
+}
+
+/* 스크롤바 스타일 */
+.menu-page .menu-list-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.menu-page .menu-list-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.menu-page .menu-item-card {
+    width: 200px;
+    height: 270px;
+    background: #FFF;
+    border-radius: 6px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05); /* 연한 드롭셰도 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.menu-page .menu-item-image-container {
+    width: 100%;
+    height: 180px;
+    border-bottom: 0.5px solid #ccc; /* 외각선 0.5px ccc */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f9f9f9;
+}
+
+.menu-page .menu-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.menu-page .menu-item-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+}
+
+.menu-page .menu-item-name {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 500; 
+    font-size: 16px;
+    color: #000;
+}
+
+.menu-page .menu-item-price {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: #000;
+}
+
+.menu-page .menu-section,
+.menu-page .menu-add-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.menu-page .menu-add-section {
+    margin-left: 80px;
+}
+
+.menu-page .menu-add-title {
+    position: absolute;
+    top: -46px; /* menu-control과 같은 높이 */
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; /* semibold */
+    font-size: 24px;
+    color: #1F1F1F;
+    margin: 0;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+}
+
+.menu-page .menu-add-card {
+    width: 280px;
+    height: 542px;
+    background: #FFF;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 0;
+    box-sizing: border-box;
+}
+
+.menu-page .menu-image-placeholder {
+    width: 70%;
+    height: 40%;
+    background: #E9E9E9;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.menu-page .menu-image-placeholder img {
+    width: 88px;
+    height: auto;
+}
+
+.menu-page .menu-image-placeholder img.full-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.menu-page .menu-form {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.menu-page .menu-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.menu-page .menu-label {
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600; 
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 8px;
+}
+
+.menu-page .menu-input {
+    width: 100%;
+    height: 32px;
+    background: #F3F3F3;
+    border-radius: 16px;
+    border: none;
+    padding: 0 14px;
+    box-sizing: border-box;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 12px;
+    color: #000;
+}
+
+.menu-page .menu-input:focus {
+    outline: none;
+}
+
+.menu-page .menu-dropdown-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    margin-top: 7px;
+}
+
+.menu-page .menu-dropdown {
+    flex: 1;
+    height: 32px;
+    background: #F3F3F3;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    color: #7D7D7D;
+    cursor: pointer;
+}
+
+.menu-page .menu-dropdown img {
+    width: 10px;
+}
+
+.menu-page .menu-add-button {
+    width: 70%;
+    height: 44px;
+    background: #4880EE;
+    color: #FFF;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 500; /* medium */
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    margin-top: auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.menu-page .menu-add-button:hover {
+    background: #3A66B3;
+}   
