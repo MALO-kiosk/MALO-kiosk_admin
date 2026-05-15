@@ -2,8 +2,21 @@ import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const SUPABASE_SERVICE_ROLE_KEY = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseAuthOptions = {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    storage: window.localStorage,
+  },
+};
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, supabaseAuthOptions);
+export const supabaseAdmin = SUPABASE_SERVICE_ROLE_KEY 
+  ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+  : supabase;
 
 // 로그인
 export const loginUser = async (email, password) => {
@@ -29,12 +42,14 @@ export const signupUser = async (email, password, name) => {
     });
     if (error) throw error;
     
-    // 프로필 정보 저장
+    // 사용자 정보 저장
     if (data.user) {
-      await supabase
-        .from('profiles')
+      const { error: insertError } = await supabaseAdmin
+        .from('users')
         .insert([{ id: data.user.id, name, email }])
         .select();
+      
+      if (insertError) throw insertError;
     }
     
     return { success: true, data };
@@ -150,7 +165,7 @@ export const uploadBanner = async (file, position) => {
     const fileName = `${Date.now()}_${file.name}`;
     
     // 파일 업로드
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('banners')
       .upload(fileName, file);
     

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './css/OptionPage.css';
 import Sidebar from '../components/Sidebar';
+import HomePreviewFrame from '../components/HomePreviewFrame';
 
 function OptionPage() {
   const [images] = useState([null, null, null]);
@@ -18,29 +19,11 @@ function OptionPage() {
         <h1 className="main-title">옵션</h1>
         <div className="main-layout">
           <div className="home-preview-frame">
-            <img src="/img/home.svg" alt="Home" className="home-preview-img" />
-            <div className="kiosk-ad-display">
-              {previewIndex !== null && images[previewIndex] && (
-                <img 
-                  src={images[previewIndex]} 
-                  alt="Kiosk Preview" 
-                  className="kiosk-ad-preview-item" 
-                />
-              )}
-            </div>
+            <HomePreviewFrame view="option" variant="basic" />
           </div>
 
           <div className="home-preview-frame">
-            <img src="/img/home.svg" alt="Home" className="home-preview-img" />
-            <div className="kiosk-ad-display">
-              {previewIndex !== null && images[previewIndex] && (
-                <img 
-                  src={images[previewIndex]} 
-                  alt="Kiosk Preview" 
-                  className="kiosk-ad-preview-item" 
-                />
-              )}
-            </div>
+            <HomePreviewFrame view="option" variant="custom" />
           </div>
 
           <div className="option-management-wrapper">

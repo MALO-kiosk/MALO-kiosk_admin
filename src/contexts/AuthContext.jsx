@@ -1,3 +1,4 @@
+// @refresh reset
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../utils/api';
 
@@ -8,6 +9,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // 개발 모드: 테스트 사용자로 바로 로그인
+    const DEV_MODE = true;
+    if (DEV_MODE) {
+      setUser({ id: 'test-user', email: 'test@test.com' });
+      setLoading(false);
+      return;
+    }
+
     // 초기 세션 확인
     const checkSession = async () => {
       try {
@@ -27,6 +36,7 @@ export const AuthProvider = ({ children }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setUser(session?.user || null);
+        setLoading(false);
       }
     );
 
