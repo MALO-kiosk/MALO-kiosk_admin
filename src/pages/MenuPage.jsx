@@ -4,6 +4,7 @@ import './css/MenuPage.css';
 import Sidebar from '../components/Sidebar';
 import HomePreviewFrame from '../components/HomePreviewFrame';
 import { COMMON_MENU_SEED_ITEMS } from '../components/common-menu-select/commonMenuDummy';
+import { addMenuItem } from '../utils/api';
 
 function MenuPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,18 +43,26 @@ function MenuPage() {
       alert('메뉴 이름과 가격을 입력해주세요.');
       return;
     }
-    const newId = Math.max(...menuItems.map(item => item.id), 0) + 1;
-    const newMenu = {
-      id: newId,
-      name: addName,
-      price: addPrice,
-      image: addImage,
-    };
-    setMenuItems([...menuItems, newMenu]);
-    setAddName('');
-    setAddPrice('');
-    setAddImage('/img/noImage.svg');
-    setSelectedMenu(newMenu);
+    (async () => {
+      try {
+        const payload = { name: addName, price: addPrice, image: addImage };
+        const result = await addMenuItem(payload);
+        if (result.success && result.data && result.data.length > 0) {
+          const created = result.data[0];
+          setMenuItems([...menuItems, created]);
+          setAddName('');
+          setAddPrice('');
+          setAddImage('/img/noImage.svg');
+          setSelectedMenu(created);
+        } else {
+          console.error('Failed to add menu:', result.error);
+          alert('메뉴 추가에 실패했습니다. 콘솔을 확인하세요.');
+        }
+      } catch (err) {
+        console.error('Add menu error:', err);
+        alert('메뉴 추가 중 오류가 발생했습니다.');
+      }
+    })();
   };
 
   const handleAddImageUpload = (e) => {

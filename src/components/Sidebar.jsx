@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './css/Sidebar.css';
-import { logoutUser } from '../utils/api';
+import { useAuth } from '../contexts/AuthContext';
 
 function Sidebar() {
     const [open, setOpen] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
+    const { logout } = useAuth();
     const menuItems = [
         { name: '첫화면', path: '/' },
         { name: '메뉴판', path: '/menu' },
@@ -25,7 +26,7 @@ function Sidebar() {
     };
 
     const handleLogout = async () => {
-        await logoutUser();
+        await logout();
         navigate('/login', { replace: true });
     };
 

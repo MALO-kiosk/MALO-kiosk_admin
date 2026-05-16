@@ -9,15 +9,15 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 개발 모드: 테스트 사용자로 바로 로그인
-    const DEV_MODE = true;
+    // Supabase 실제 세션 사용
+    const DEV_MODE = false;
     if (DEV_MODE) {
       setUser({ id: 'test-user', email: 'test@test.com' });
       setLoading(false);
       return;
     }
 
-    // 초기 세션 확인
+    // Supabase 세션 확인
     const checkSession = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
@@ -45,10 +45,23 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
+  const logout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      setUser(null);
+      return { success: true };
+    } catch (error) {
+      console.error('Logout Error:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
   const value = {
     user,
     loading,
     isAuthenticated: !!user,
+    logout,
   };
 
   return (
