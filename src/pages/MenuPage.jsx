@@ -1,22 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/MenuPage.css';
 import Sidebar from '../components/Sidebar';
 import HomePreviewFrame from '../components/HomePreviewFrame';
-import { COMMON_MENU_SEED_ITEMS } from '../components/common-menu-select/commonMenuDummy';
+import { getMenuItems } from '../utils/api';
 import { addMenuItem } from '../utils/api';
 
 function MenuPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedMode, setSelectedMode] = useState('미리보기'); // 현재 메인에 표시될 모드
 
-  // 메뉴 리스트 데이터
-  const [menuItems, setMenuItems] = useState(COMMON_MENU_SEED_ITEMS);
+  // 메뉴 리스트 데이터 (DB에서 로드)
+  const [menuItems, setMenuItems] = useState([]);
 
   // 선택된 메뉴 상태
-  const [selectedMenu, setSelectedMenu] = useState(menuItems[0]);
-  const [editName, setEditName] = useState(menuItems[0].name);
-  const [editPrice, setEditPrice] = useState(menuItems[0].price);
+  const [selectedMenu, setSelectedMenu] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editPrice, setEditPrice] = useState('');
   
   // 새 메뉴 추가 입력 필드
   const [addName, setAddName] = useState('');
@@ -75,6 +75,26 @@ function MenuPage() {
       reader.readAsDataURL(file);
     }
   };
+
+  // 마운트 시 DB에서 메뉴 불러오기
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getMenuItems();
+        if (res.success && Array.isArray(res.data)) {
+          setMenuItems(res.data);
+          const first = res.data[0] || null;
+          setSelectedMenu(first);
+          setEditName(first?.name || '');
+          setEditPrice(first?.price || '');
+        } else {
+          console.error('Menu fetch failed:', res.error);
+        }
+      } catch (err) {
+        console.error('Error fetching menus:', err);
+      }
+    })();
+  }, []);
 
   const handleUpdateMenu = () => {
     if (!selectedMenu) return;
