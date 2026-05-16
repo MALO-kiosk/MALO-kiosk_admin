@@ -51,15 +51,15 @@ function OptionPage() {
                 <div className="option-form">
                   <div className="option-input-group">
                     <label className="option-label">옵션 이름</label>
-                      <input type="text" className="option-input" value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="옵션 그룹 이름 (예: 펄, 당도)" />
+                      <input type="text" className="option-input" value={groupName} onChange={(e) => setGroupName(e.target.value)} />
                   </div>
                     <div className="option-input-group">
                       <label className="option-label">옵션 값 이름</label>
-                      <input type="text" className="option-input" value={optionName} onChange={(e) => setOptionName(e.target.value)} placeholder="옵션 값 (예: 타피오카펄)" />
+                      <input type="text" className="option-input" value={optionName} onChange={(e) => setOptionName(e.target.value)} />
                     </div>
                     <div className="option-input-group">
                       <label className="option-label">옵션 가격</label>
-                      <input type="text" className="option-input" value={optionPrice} onChange={(e) => setOptionPrice(e.target.value)} placeholder="가격 (예: 500)" />
+                      <input type="text" className="option-input" value={optionPrice} onChange={(e) => setOptionPrice(e.target.value)} />
                     </div>
                 </div>
                   <button className="option-add-button" onClick={async () => {
