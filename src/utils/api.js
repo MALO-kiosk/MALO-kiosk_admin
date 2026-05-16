@@ -159,6 +159,68 @@ export const getBanners = async () => {
   }
 };
 
+// 커스텀 옵션 그룹 및 아이템 조회 (그룹-아이템 관계 포함)
+export const getCustomOptions = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('option_groups')
+      .select('*, option_items(*)')
+      .order('id', { ascending: true });
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Custom Options Fetch Error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// 그룹 이름으로 그룹 조회
+export const getOptionGroupByName = async (name) => {
+  try {
+    const { data, error } = await supabase
+      .from('option_groups')
+      .select('*')
+      .eq('name', name)
+      .limit(1)
+      .single();
+    if (error && error.code !== 'PGRST116') throw error; // single() returns 406 if no rows
+    return { success: true, data };
+  } catch (error) {
+    console.error('Get Option Group Error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// 옵션 그룹 추가
+export const addOptionGroup = async (group) => {
+  try {
+    const { data, error } = await supabase
+      .from('option_groups')
+      .insert([group])
+      .select();
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Option Group Add Error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// 옵션 아이템 추가
+export const addOptionItem = async (item) => {
+  try {
+    const { data, error } = await supabase
+      .from('option_items')
+      .insert([item])
+      .select();
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Option Item Add Error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
 // 배너 업로드
 export const uploadBanner = async (file, position) => {
   try {

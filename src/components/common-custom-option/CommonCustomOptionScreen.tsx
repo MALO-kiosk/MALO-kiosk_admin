@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useMemo, useState, useEffect } from 'react'
 import {
   EasyCartBarTotal,
   EasyOrderActionBar,
@@ -12,13 +12,8 @@ import { cartSummarySpec } from '../../features/easy-option'
 import '../../features/easy-option/EasyOptionScreen.css'
 import './CommonCustomOptionScreen.css'
 
-const PEARL_ROW_LABELS = [
-  '타피오카펄 + 500원',
-  '화이트펄 + 500원',
-  '알로에 + 500원',
-] as const
-
-const PEARL_ROW_ARIA = ['타피오카 펄', '화이트 펄', '알로에'] as const
+let PEARL_ROW_LABELS = [ '타피오카펄 + 500원', '화이트펄 + 500원', '알로에 + 500원' ]
+let PEARL_ROW_ARIA = ['타피오카 펄', '화이트 펄', '알로에']
 
 const CUSTOM_OPTION_UNIT_WON = 500
 
@@ -50,6 +45,29 @@ export function CommonCustomOptionScreen({
   const setPearlQtyRow = (row: number, next: (q: number) => number) => {
     setPearlQtys((rows) => rows.map((q, i) => (i === row ? next(q) : q)))
   }
+
+  // DB에서 펄 그룹이 있으면 로드하여 라벨을 덮어씀
+  useEffect(() => {
+    let mounted = true
+    ;(async () => {
+      try {
+        const api = await import('../../utils/api')
+        const res = await api.getCustomOptions()
+        if (!mounted) return
+        if (res.success && Array.isArray(res.data)) {
+          // 그룹 이름이 '펄'인 그룹의 아이템을 PEARL_ROW_LABELS로 사용
+          const pearlGroup = res.data.find((g) => g.name === '펄')
+          if (pearlGroup && Array.isArray(pearlGroup.option_items)) {
+            PEARL_ROW_LABELS = pearlGroup.option_items.map((it) => `${it.name} + ${it.price || 0}원`)
+            PEARL_ROW_ARIA = pearlGroup.option_items.map((it) => it.name)
+          }
+        }
+      } catch (err) {
+        // ignore, keep defaults
+      }
+    })()
+    return () => { mounted = false }
+  }, [])
 
   return (
     <div className="common-option">
