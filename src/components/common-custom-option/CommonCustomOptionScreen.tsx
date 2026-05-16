@@ -53,7 +53,9 @@ export function CommonCustomOptionScreen({
 }: CommonCustomOptionScreenProps) {
   const [shotQty, setShotQty] = useState(0)
   const [syrupQty, setSyrupQty] = useState(0)
-  const [pearlQtys, setPearlQtys] = useState([0, 0, 0])
+  const [pearlQtys, setPearlQtys] = useState(
+    DEFAULT_PEARL_OPTIONS.map(() => 0),
+  )
   const [sweetness, setSweetness] = useState(DEFAULT_SWEETNESS_OPTIONS[0].name)
   const [shotOption, setShotOption] = useState<OptionItem>(DEFAULT_SHOT_OPTION)
   const [syrupOption, setSyrupOption] = useState<OptionItem>(DEFAULT_SYRUP_OPTION)
@@ -112,7 +114,7 @@ export function CommonCustomOptionScreen({
 
           const loadedSweetness = findItemsByGroupName(groups, '당도')
           if (loadedSweetness && loadedSweetness.length > 0) {
-            const nextSweetness = loadedSweetness.slice(0, 3).map((item) => ({
+            const nextSweetness = loadedSweetness.map((item) => ({
               name: item.name,
               price: Number(item.price) || 0,
             }))
@@ -122,7 +124,7 @@ export function CommonCustomOptionScreen({
 
           const loadedPearl = findItemsByGroupName(groups, '펄')
           if (loadedPearl && loadedPearl.length > 0) {
-            const nextPearl = loadedPearl.slice(0, 3).map((item) => ({
+            const nextPearl = loadedPearl.map((item) => ({
               name: item.name,
               price: Number(item.price) || 0,
             }))
@@ -137,15 +139,9 @@ export function CommonCustomOptionScreen({
     return () => { mounted = false }
   }, [])
 
-  const shownSweetness = [...sweetnessOptions]
-    .slice(0, 3)
-    .concat(
-      DEFAULT_SWEETNESS_OPTIONS.slice(
-        0,
-        Math.max(0, 3 - Math.min(3, sweetnessOptions.length)),
-      ),
-    )
-    .slice(0, 3)
+  useEffect(() => {
+    setPearlQtys((prev) => pearlOptions.map((_, i) => prev[i] ?? 0))
+  }, [pearlOptions])
 
   return (
     <div className="common-option">
@@ -159,121 +155,117 @@ export function CommonCustomOptionScreen({
         <h1 className="common-option__title">{panelTitle}</h1>
       </TopWhitePanel>
 
-      <p className="common-custom-option__shot-label">샷</p>
-      <p className="common-custom-option__shot-addon">
-        {shotOption.name} +{shotOption.price}원
-      </p>
-
-      <div className="common-custom-option__shot-qty" aria-label="샷 수량">
-        <button
-          type="button"
-          className="common-custom-option__shot-qty-btn"
-          aria-label="샷 한 개 빼기"
-          onClick={() => setShotQty((q) => Math.max(0, q - 1))}
-        >
-          <img src={minusIcon} alt="" width={54} height={54} />
-        </button>
-        <span className="common-custom-option__shot-qty-val">{shotQty}</span>
-        <button
-          type="button"
-          className="common-custom-option__shot-qty-btn"
-          aria-label="샷 한 개 더하기"
-          onClick={() => setShotQty((q) => q + 1)}
-        >
-          <img src={plusIcon} alt="" width={51} height={51} />
-        </button>
-      </div>
-
-      <p className="common-custom-option__syrup-label">시럽</p>
-      <p className="common-custom-option__syrup-addon">
-        {syrupOption.name} +{syrupOption.price}원
-      </p>
-      <div className="common-custom-option__syrup-qty" aria-label="바닐라 시럽 수량">
-        <button
-          type="button"
-          className="common-custom-option__shot-qty-btn"
-          aria-label="바닐라 시럽 한 스푼 빼기"
-          onClick={() => setSyrupQty((q) => Math.max(0, q - 1))}
-        >
-          <img src={minusIcon} alt="" width={54} height={54} />
-        </button>
-        <span className="common-custom-option__shot-qty-val">{syrupQty}</span>
-        <button
-          type="button"
-          className="common-custom-option__shot-qty-btn"
-          aria-label="바닐라 시럽 한 스푼 더하기"
-          onClick={() => setSyrupQty((q) => q + 1)}
-        >
-          <img src={plusIcon} alt="" width={51} height={51} />
-        </button>
-      </div>
-
-      <p className="common-custom-option__sweetness-label">당도</p>
-
-      <button
-        type="button"
-        className={`common-custom-option__sweetness-pill common-custom-option__sweetness-pill--slot-more ${sweetness === shownSweetness[0].name ? 'common-custom-option__sweetness-pill--selected' : 'common-custom-option__sweetness-pill--unselected'}`}
-        aria-pressed={sweetness === shownSweetness[0].name}
-        aria-label={shownSweetness[0].name}
-        onClick={() => setSweetness(shownSweetness[0].name)}
-      >
-        <span className="common-custom-option__sweetness-pill-text">{shownSweetness[0].name}</span>
-      </button>
-      <button
-        type="button"
-        className={`common-custom-option__sweetness-pill common-custom-option__sweetness-pill--slot-normal ${sweetness === shownSweetness[1].name ? 'common-custom-option__sweetness-pill--selected' : 'common-custom-option__sweetness-pill--unselected'}`}
-        aria-pressed={sweetness === shownSweetness[1].name}
-        aria-label={shownSweetness[1].name}
-        onClick={() => setSweetness(shownSweetness[1].name)}
-      >
-        <span className="common-custom-option__sweetness-pill-text">{shownSweetness[1].name}</span>
-      </button>
-      <button
-        type="button"
-        className={`common-custom-option__sweetness-pill common-custom-option__sweetness-pill--slot-less ${sweetness === shownSweetness[2].name ? 'common-custom-option__sweetness-pill--selected' : 'common-custom-option__sweetness-pill--unselected'}`}
-        aria-pressed={sweetness === shownSweetness[2].name}
-        aria-label={shownSweetness[2].name}
-        onClick={() => setSweetness(shownSweetness[2].name)}
-      >
-        <span className="common-custom-option__sweetness-pill-text common-custom-option__sweetness-pill-text--fluid">
-          {shownSweetness[2].name}
-        </span>
-      </button>
-
-      <p className="common-custom-option__pearl-label">펄</p>
-      {pearlOptions.slice(0, 3).map((item, row) => (
-        <Fragment key={row}>
-          <p
-            className={`common-custom-option__pearl-addon common-custom-option__pearl-addon--r${row}`}
-          >
-            {item.name} + {item.price}원
-          </p>
-          <div
-            className={`common-custom-option__pearl-qty common-custom-option__pearl-qty--r${row}`}
-            aria-label={`${item.name} 수량 ${row + 1}행`}
-          >
-            <button
-              type="button"
-              className="common-custom-option__pearl-qty-btn"
-              aria-label={`${item.name} ${row + 1}행 한 개 빼기`}
-              onClick={() => setPearlQtyRow(row, (q) => Math.max(0, q - 1))}
-            >
-              <img src={minusIcon} alt="" width={54} height={54} />
-            </button>
-            <span className="common-custom-option__pearl-qty-val">
-              {pearlQtys[row]}
-            </span>
-            <button
-              type="button"
-              className="common-custom-option__pearl-qty-btn"
-              aria-label={`${item.name} ${row + 1}행 한 개 더하기`}
-              onClick={() => setPearlQtyRow(row, (q) => q + 1)}
-            >
-              <img src={plusIcon} alt="" width={51} height={51} />
-            </button>
+      <div className="common-custom-option__scroll-area">
+        <section className="common-custom-option__section">
+          <p className="common-custom-option__section-label">샷</p>
+          <div className="common-custom-option__qty-row" aria-label="샷 수량">
+            <p className="common-custom-option__section-addon">
+              {shotOption.name} +{shotOption.price}원
+            </p>
+            <div className="common-custom-option__qty-controls">
+              <button
+                type="button"
+                className="common-custom-option__shot-qty-btn"
+                aria-label="샷 한 개 빼기"
+                onClick={() => setShotQty((q) => Math.max(0, q - 1))}
+              >
+                <img src={minusIcon} alt="" width={54} height={54} />
+              </button>
+              <span className="common-custom-option__shot-qty-val">{shotQty}</span>
+              <button
+                type="button"
+                className="common-custom-option__shot-qty-btn"
+                aria-label="샷 한 개 더하기"
+                onClick={() => setShotQty((q) => q + 1)}
+              >
+                <img src={plusIcon} alt="" width={51} height={51} />
+              </button>
+            </div>
           </div>
-        </Fragment>
-      ))}
+        </section>
+
+        <section className="common-custom-option__section">
+          <p className="common-custom-option__section-label">시럽</p>
+          <div className="common-custom-option__qty-row" aria-label="시럽 수량">
+            <p className="common-custom-option__section-addon">
+              {syrupOption.name} +{syrupOption.price}원
+            </p>
+            <div className="common-custom-option__qty-controls">
+              <button
+                type="button"
+                className="common-custom-option__shot-qty-btn"
+                aria-label="시럽 한 스푼 빼기"
+                onClick={() => setSyrupQty((q) => Math.max(0, q - 1))}
+              >
+                <img src={minusIcon} alt="" width={54} height={54} />
+              </button>
+              <span className="common-custom-option__shot-qty-val">{syrupQty}</span>
+              <button
+                type="button"
+                className="common-custom-option__shot-qty-btn"
+                aria-label="시럽 한 스푼 더하기"
+                onClick={() => setSyrupQty((q) => q + 1)}
+              >
+                <img src={plusIcon} alt="" width={51} height={51} />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section className="common-custom-option__section">
+          <p className="common-custom-option__section-label">당도</p>
+          <div className="common-custom-option__sweetness-wrap">
+            {sweetnessOptions.map((item) => (
+              <button
+                key={item.name}
+                type="button"
+                className={`common-custom-option__sweetness-pill common-custom-option__sweetness-pill--dynamic ${sweetness === item.name ? 'common-custom-option__sweetness-pill--selected' : 'common-custom-option__sweetness-pill--unselected'}`}
+                aria-pressed={sweetness === item.name}
+                aria-label={item.name}
+                onClick={() => setSweetness(item.name)}
+              >
+                <span className="common-custom-option__sweetness-pill-text">{item.name}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="common-custom-option__section">
+          <p className="common-custom-option__section-label">펄</p>
+          <div className="common-custom-option__list-wrap">
+            {pearlOptions.map((item, row) => (
+              <Fragment key={`${item.name}-${row}`}>
+                <div className="common-custom-option__qty-row" aria-label={`${item.name} 수량`}>
+                  <p className="common-custom-option__section-addon">
+                    {item.name} + {item.price}원
+                  </p>
+                  <div className="common-custom-option__qty-controls">
+                    <button
+                      type="button"
+                      className="common-custom-option__pearl-qty-btn"
+                      aria-label={`${item.name} 한 개 빼기`}
+                      onClick={() => setPearlQtyRow(row, (q) => Math.max(0, q - 1))}
+                    >
+                      <img src={minusIcon} alt="" width={54} height={54} />
+                    </button>
+                    <span className="common-custom-option__pearl-qty-val">
+                      {pearlQtys[row]}
+                    </span>
+                    <button
+                      type="button"
+                      className="common-custom-option__pearl-qty-btn"
+                      aria-label={`${item.name} 한 개 더하기`}
+                      onClick={() => setPearlQtyRow(row, (q) => q + 1)}
+                    >
+                      <img src={plusIcon} alt="" width={51} height={51} />
+                    </button>
+                  </div>
+                </div>
+              </Fragment>
+            ))}
+          </div>
+        </section>
+      </div>
 
       <EasyCartBarTotal
         menuSpec={cartSummarySpec('ice', 'regular')}

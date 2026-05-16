@@ -1,5 +1,85 @@
 /* 공통 맞춤 옵션 전용 — EasyCustomOptionScreen.css와 분리 */
 
+.common-custom-option__scroll-area {
+  position: absolute;
+  left: 67px;
+  right: 67px;
+  top: 328px;
+  bottom: 460px;
+  z-index: 2;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.common-custom-option__scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.common-custom-option__scroll-area::-webkit-scrollbar-thumb {
+  background: #c7c7c7;
+  border-radius: 999px;
+}
+
+.common-custom-option__section {
+  margin-bottom: 44px;
+}
+
+.common-custom-option__section-label {
+  margin: 0 0 18px;
+  padding: 0;
+  color: #000;
+  font-family: Pretendard, system-ui, sans-serif;
+  font-size: 45px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.common-custom-option__section-addon {
+  margin: 0;
+  padding: 0;
+  color: #000;
+  font-family: Pretendard, system-ui, sans-serif;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  text-align: left;
+}
+
+.common-custom-option__qty-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.common-custom-option__qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 23.6px;
+}
+
+.common-custom-option__sweetness-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.common-custom-option__sweetness-pill--dynamic {
+  position: static;
+  width: 296px;
+  height: 65px;
+}
+
+.common-custom-option__list-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .common-custom-option__shot-label {
   position: absolute;
   left: 68px;
@@ -31,6 +111,8 @@
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+  text-align: left;
+  white-space: nowrap;  
 }
 
 /* 플러스 오른쪽 80.62px 기준 행 — 위 423px; − / 숫자 / + 간격 23.6px */
@@ -257,6 +339,7 @@
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+  text-align: left;
 }
 
 .common-custom-option__pearl-addon--r0 {
@@ -295,4 +378,11 @@
 
 .common-custom-option__pearl-qty--r2 {
   top: calc(1050px + (66px + 11px) * 2);
+}
+
+/* 동적 렌더링 모드에서는 당도 버튼의 절대배치를 해제한다. */
+.common-custom-option__sweetness-wrap .common-custom-option__sweetness-pill {
+  position: static;
+  top: auto;
+  left: auto;
 }
