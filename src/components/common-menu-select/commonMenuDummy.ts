@@ -5,6 +5,12 @@ export type CommonMenuSeedItem = {
   name: string
   price: string
   image: string
+  primary_category?: string
+  secondary_category?: string
+  category_primary?: string
+  category_secondary?: string
+  category?: string
+  subcategory?: string
 }
 
 export const COMMON_MENU_SEED_ITEMS: CommonMenuSeedItem[] = [

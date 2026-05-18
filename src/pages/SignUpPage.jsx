@@ -19,6 +19,7 @@ const SignUpPage = () => {
     const navigate = useNavigate();
 
     const handleSignUp = async () => {
+        if (loading) return;
         // 입력값 검증 (필드별 에러 설정)
         const newFieldErrors = { email: false, name: false, password: false, rePassword: false };
         let hasError = false;
@@ -68,7 +69,7 @@ const SignUpPage = () => {
     };
 
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !loading) {
             handleSignUp();
         }
     };

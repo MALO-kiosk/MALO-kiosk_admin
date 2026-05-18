@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React from 'react'
 import './MenuCategoryTabs.css'
 
 export type MenuCategoryId = 'recommended' | 'new' | 'coffee' | 'dessert'
@@ -39,15 +39,27 @@ const COFFEE_DETAIL_TABS: CoffeeDetailDef[] = [
 export type MenuCategoryTabsProps = {
   className?: string
   initialActiveId?: MenuCategoryId
+  activeId?: MenuCategoryId
+  activeCoffeeDetail?: CoffeeDetailCategoryId
+  onPrimaryCategoryChange?: (category: MenuCategoryId) => void
+  onCoffeeDetailCategoryChange?: (category: CoffeeDetailCategoryId) => void
 }
 
 export function MenuCategoryTabs({
   className,
   initialActiveId = 'coffee',
+  activeId: controlledActiveId,
+  activeCoffeeDetail: controlledActiveCoffeeDetail,
+  onPrimaryCategoryChange,
+  onCoffeeDetailCategoryChange,
 }: MenuCategoryTabsProps) {
-  const [activeId, setActiveId] = useState<MenuCategoryId>(initialActiveId)
-  const [activeCoffeeDetail, setActiveCoffeeDetail] =
-    useState<CoffeeDetailCategoryId>('coffee')
+  const [uncontrolledActiveId, setUncontrolledActiveId] =
+    React.useState<MenuCategoryId>(initialActiveId)
+  const [uncontrolledActiveCoffeeDetail, setUncontrolledActiveCoffeeDetail] =
+    React.useState<CoffeeDetailCategoryId>('coffee')
+
+  const activeId = controlledActiveId ?? uncontrolledActiveId
+  const activeCoffeeDetail = controlledActiveCoffeeDetail ?? uncontrolledActiveCoffeeDetail
 
   return (
     <div
@@ -74,7 +86,10 @@ export function MenuCategoryTabs({
                 .filter(Boolean)
                 .join(' ')}
               style={{ marginLeft: tab.gapBefore }}
-              onClick={() => setActiveId(tab.id)}
+              onClick={() => {
+                setUncontrolledActiveId(tab.id)
+                onPrimaryCategoryChange?.(tab.id)
+              }}
             >
               <span className="menu-category-tabs__label">{tab.label}</span>
             </button>
@@ -82,7 +97,7 @@ export function MenuCategoryTabs({
         })}
       </div>
 
-      {activeId === 'coffee' ? (
+      {activeId === 'coffee' || activeId === 'recommended' || activeId === 'new' ? (
         <div
           className="coffee-detail-tabs"
           role="tablist"
@@ -103,7 +118,10 @@ export function MenuCategoryTabs({
                   .filter(Boolean)
                   .join(' ')}
                 style={{ marginLeft: tab.gapBefore }}
-                onClick={() => setActiveCoffeeDetail(tab.id)}
+                onClick={() => {
+                  setUncontrolledActiveCoffeeDetail(tab.id)
+                  onCoffeeDetailCategoryChange?.(tab.id)
+                }}
               >
                 <span className="coffee-detail-tabs__label">{tab.label}</span>
               </button>

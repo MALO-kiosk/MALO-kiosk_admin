@@ -3,12 +3,16 @@ import './CommonMenuBottomPanel.css'
 
 export type CommonMenuBottomPanelProps = {
   children?: ReactNode
+  hasItems?: boolean
 }
 
-export function CommonMenuBottomPanel({ children }: CommonMenuBottomPanelProps) {
+export function CommonMenuBottomPanel({
+  children,
+  hasItems = false,
+}: CommonMenuBottomPanelProps) {
   return (
     <div className="common-menu-bottom-panel">
-      <hr className="common-menu-bottom-panel__rule" aria-hidden />
+      {hasItems ? <hr className="common-menu-bottom-panel__rule" aria-hidden /> : null}
       {children}
     </div>
   )

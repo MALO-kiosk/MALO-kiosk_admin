@@ -11,6 +11,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+        if (loading) return;
         if (!email || !password) {
             setError('이메일과 비밀번호를 입력해주세요.');
             return;
@@ -45,7 +46,7 @@ const LoginPage = () => {
     };
 
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !loading) {
             handleLogin();
         }
     };

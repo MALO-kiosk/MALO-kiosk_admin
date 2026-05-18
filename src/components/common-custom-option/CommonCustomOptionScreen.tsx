@@ -6,11 +6,16 @@ import {
   TopWhitePanel,
 } from '../common'
 import { getCustomOptions } from '../../utils/api'
+// @ts-ignore: allow importing CSS side-effects in TSX
 import '../common-option/CommonOptionScreen.css'
+// @ts-ignore: allow importing SVG assets as strings
 import minusIcon from '../../assets/icons/minus_icon.svg'
+// @ts-ignore: allow importing SVG assets as strings
 import plusIcon from '../../assets/icons/plus_icon.svg'
 import { cartSummarySpec } from '../../features/easy-option'
+// @ts-ignore: allow importing CSS side-effects in TSX
 import '../../features/easy-option/EasyOptionScreen.css'
+// @ts-ignore: allow importing CSS side-effects in TSX
 import './CommonCustomOptionScreen.css'
 
 type OptionItem = {

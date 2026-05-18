@@ -9,6 +9,7 @@ function FirstPage() {
   const fileInputRef = useRef(null);
   const [pickingIndex, setPickingIndex] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [deletingIndex, setDeletingIndex] = useState(null);
 
   // DB에서 배너 로드
   useEffect(() => {
@@ -35,6 +36,7 @@ function FirstPage() {
   }, []);
 
   const handleBoxClick = (index) => {
+    if (uploading || deletingIndex !== null) return;
     if (banners[index]?.image_url) {
       setPreviewIndex(index);
     } else {
@@ -44,6 +46,10 @@ function FirstPage() {
   };
 
   const handleFileChange = async (e) => {
+    if (uploading) {
+      e.target.value = '';
+      return;
+    }
     const file = e.target.files[0];
     if (file && pickingIndex !== null) {
       setUploading(true);
@@ -72,6 +78,8 @@ function FirstPage() {
   const handleDelete = async (index, e) => {
     e.stopPropagation();
     if (!banners[index]?.id) return;
+    if (deletingIndex !== null) return;
+    setDeletingIndex(index);
     
     try {
       const { deleteBanner } = await import('../utils/api');
@@ -88,6 +96,8 @@ function FirstPage() {
     } catch (err) {
       console.error('Delete error:', err);
       alert('삭제 중 오류 발생');
+    } finally {
+      setDeletingIndex(null);
     }
   };
 
@@ -135,6 +145,7 @@ function FirstPage() {
                     alt="Delete" 
                     className="ad-box-delete-btn" 
                     onClick={(e) => handleDelete(index, e)}
+                    style={{ opacity: deletingIndex === index ? 0.5 : 1, pointerEvents: deletingIndex !== null ? 'none' : 'auto' }}
                   />
                 </div>
               ))}
