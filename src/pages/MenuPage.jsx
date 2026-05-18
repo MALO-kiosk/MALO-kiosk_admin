@@ -292,7 +292,6 @@ function MenuPage() {
                     <input 
                       type="text" 
                       className="menu-input"
-                      placeholder="새 메뉴 이름"
                       value={addName}
                       onChange={(e) => setAddName(e.target.value)}
                     />
@@ -302,7 +301,6 @@ function MenuPage() {
                     <input 
                       type="text" 
                       className="menu-input"
-                      placeholder="가격 입력 (예: 3,000원)"
                       value={addPrice}
                       onChange={(e) => setAddPrice(e.target.value)}
                     />

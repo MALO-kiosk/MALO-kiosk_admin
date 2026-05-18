@@ -224,30 +224,57 @@ export const addOptionItem = async (item) => {
 // 배너 업로드
 export const uploadBanner = async (file, position) => {
   try {
-    const fileName = `${Date.now()}_${file.name}`;
+    // 파일명 정제: 한글, 특수문자 제거 (영문, 숫자, -, _만 허용)
+    const ext = file.name.substring(file.name.lastIndexOf('.'));
+    let namePart = file.name.substring(0, file.name.lastIndexOf('.'));
+    namePart = namePart.replace(/[^\w\s-]/g, '').replace(/\s+/g, '_');
+    const fileName = `${Date.now()}_${namePart || 'file'}${ext}`.toLowerCase();
+    
+    console.log('[Banner Upload Debug]');
+    console.log('Original filename:', file.name);
+    console.log('Cleaned filename:', fileName);
+    console.log('File type:', file.type);
+    console.log('File size:', file.size);
+    console.log('Position:', position);
     
     // 파일 업로드
-    const { error: uploadError } = await supabase.storage
+    console.log('Starting Storage upload...');
+    const { error: uploadError, data: uploadData } = await supabase.storage
       .from('banners')
       .upload(fileName, file);
     
-    if (uploadError) throw uploadError;
+    if (uploadError) {
+      console.error('Storage Upload Error Details:', uploadError);
+      throw uploadError;
+    }
+    console.log('Storage upload success:', uploadData);
     
     // 공개 URL 획득
     const { data: publicUrlData } = supabase.storage
       .from('banners')
       .getPublicUrl(fileName);
+    console.log('Public URL:', publicUrlData.publicUrl);
     
-    // DB에 기록
+    // DB에 기록 (UPSERT: position 기준으로 update or insert)
+    console.log('Starting DB upsert...');
     const { data, error } = await supabase
       .from('banners')
-      .insert([{ position, image_url: publicUrlData.publicUrl, file_name: fileName }])
+      .upsert([{ position, image_url: publicUrlData.publicUrl, file_name: fileName }], { 
+        onConflict: 'position' 
+      })
       .select();
     
-    if (error) throw error;
+    if (error) {
+      console.error('DB Upsert Error Details:', error);
+      throw error;
+    }
+    console.log('DB upsert success:', data);
     return { success: true, data };
   } catch (error) {
     console.error('Banner Upload Error:', error);
+    console.error('Error message:', error.message);
+    console.error('Error status:', error.status);
+    console.error('Error details:', error);
     return { success: false, error: error.message };
   }
 };

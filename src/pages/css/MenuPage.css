@@ -239,6 +239,7 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 24px;
+    background: #e1e1e1;
 }
 
 .menu-page .menu-image-placeholder img {

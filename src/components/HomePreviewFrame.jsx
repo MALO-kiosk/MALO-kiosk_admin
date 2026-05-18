@@ -16,13 +16,13 @@ function MenuPreview({ menuItems, selectedMenu }) {
   );
 }
 
-function OptionPreview({ variant }) {
+function OptionPreview({ variant, refreshKey }) {
   return (
     <div className="hp-frame option-preview">
       <div className="hp-menu-preview-wrapper">
         <div className="hp-stage-canvas">
           {variant === 'custom' ? (
-            <CommonCustomOptionScreen />
+            <CommonCustomOptionScreen refreshKey={refreshKey} />
           ) : (
             <CommonOptionScreen />
           )}
@@ -32,7 +32,7 @@ function OptionPreview({ variant }) {
   );
 }
 
-export default function HomePreviewFrame({ view = 'menu', variant = 'basic', menuItems, selectedMenu }) {
+export default function HomePreviewFrame({ view = 'menu', variant = 'basic', menuItems, selectedMenu, refreshKey = 0 }) {
   if (view === 'menu') return <MenuPreview menuItems={menuItems} selectedMenu={selectedMenu} />;
-  return <OptionPreview variant={variant} />;
+  return <OptionPreview variant={variant} refreshKey={refreshKey} />;
 }

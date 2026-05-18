@@ -70,7 +70,7 @@
 
 .option-page .option-add-card {
     width: 350px;
-    height: 480px;
+    height: 450px;
     background: #FFF;
     border-radius: 8px;
     display: flex;
@@ -106,15 +106,17 @@
 
 .option-page .option-input {
     width: 100%;
-    height: 64px;
+    height: 50px;
     background: #F3F3F3;
     border-radius: 8px;
     border: none;
     padding: 0 8px;
     box-sizing: border-box;
     font-family: 'Pretendard', sans-serif;
-    font-size: 13px;
+    font-size: 20px;
     color: #000;
+    font-weight: 500;
+    text-align: center;
 }
 
 .option-page .option-input:focus {
@@ -123,7 +125,7 @@
 
 .option-page .option-add-button {
     width: 80%;
-    height: 64px;
+    height: 80px;
     background: #4880EE;
     color: #FFF;
     font-family: 'Pretendard', sans-serif;
@@ -131,7 +133,7 @@
     font-size: 17px;
     border-radius: 5px;
     border: none;
-    margin-top: auto;
+    margin-top: 20px;
     margin-bottom: 20px;
     cursor: pointer;
 }

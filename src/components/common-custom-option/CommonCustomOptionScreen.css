@@ -33,12 +33,13 @@
   font-family: Pretendard, system-ui, sans-serif;
   font-size: 45px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: normal;
+  text-align: left;
 }
 
 .common-custom-option__section-addon {
-  margin: 0;
+  margin-left: 50px;
   padding: 0;
   color: #000;
   font-family: Pretendard, system-ui, sans-serif;

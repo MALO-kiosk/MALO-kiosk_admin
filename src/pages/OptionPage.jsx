@@ -11,6 +11,7 @@ function OptionPage() {
   const [optionName, setOptionName] = useState('');
   const [optionPrice, setOptionPrice] = useState('');
   const [optionGroups, setOptionGroups] = useState([]);
+  const [customPreviewRefreshKey, setCustomPreviewRefreshKey] = useState(0);
 
   const loadOptionGroups = async () => {
     try {
@@ -41,7 +42,7 @@ function OptionPage() {
           </div>
 
           <div className="home-preview-frame">
-            <HomePreviewFrame view="option" variant="custom" />
+            <HomePreviewFrame view="option" variant="custom" refreshKey={customPreviewRefreshKey} />
           </div>
 
           <div className="option-management-wrapper">
@@ -87,6 +88,7 @@ function OptionPage() {
                         alert('옵션이 추가되었습니다.');
                         setGroupName(''); setOptionName(''); setOptionPrice('');
                         loadOptionGroups();
+                        setCustomPreviewRefreshKey((k) => k + 1);
                       } else {
                         console.error('Add option item failed:', itemRes.error);
                         alert('옵션 추가에 실패했습니다. 콘솔을 확인하세요.');
