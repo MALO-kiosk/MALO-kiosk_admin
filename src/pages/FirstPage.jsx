@@ -4,6 +4,7 @@ import './css/FirstPage.css';
 import Sidebar from '../components/Sidebar';
 
 function FirstPage() {
+  const assetBase = import.meta.env.BASE_URL;
   const [banners, setBanners] = useState([{}, {}, {}]); // 3개 슬롯
   const [previewIndex, setPreviewIndex] = useState(null);
   const fileInputRef = useRef(null);
@@ -104,7 +105,7 @@ function FirstPage() {
   return (
     <div className="first-page">
       <nav className="main-navbar">
-        <img src="/img/MALO.svg" alt="MALO Logo" className="main-navbar-logo" />
+        <img src={`${assetBase}img/MALO.svg`} alt="MALO Logo" className="main-navbar-logo" />
         <span className="main-navbar-right">미림점 1번 키오스크</span>
       </nav>
       <Sidebar />
@@ -112,7 +113,7 @@ function FirstPage() {
         <h1 className="main-title">첫화면</h1>
         <div className="main-layout">
           <div className="home-preview-frame">
-            <img src="/img/home.svg" alt="Home" className="home-preview-img" />
+            <img src={`${assetBase}img/home.svg`} alt="Home" className="home-preview-img" />
             <div className="kiosk-ad-display">
               {previewIndex !== null && banners[previewIndex]?.image_url && (
                 <img 
@@ -138,10 +139,10 @@ function FirstPage() {
                   }}
                 >
                   {!banner?.image_url && (
-                    <img src="/img/noImage.svg" alt="No Image" className="ad-box-main-img" />
+                    <img src={`${assetBase}img/noImage.svg`} alt="No Image" className="ad-box-main-img" />
                   )}
                   <img 
-                    src="/img/x.svg" 
+                    src={`${assetBase}img/x.svg`} 
                     alt="Delete" 
                     className="ad-box-delete-btn" 
                     onClick={(e) => handleDelete(index, e)}

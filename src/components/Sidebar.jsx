@@ -5,6 +5,7 @@ import './css/Sidebar.css';
 import { useAuth } from '../contexts/AuthContext';
 
 function Sidebar() {
+    const assetBase = import.meta.env.BASE_URL;
     const [open, setOpen] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
@@ -37,7 +38,7 @@ function Sidebar() {
                 <div className="sidebar-group-header" onClick={handleToggle} style={{ cursor: 'pointer' }}>
                     <span>맞춤 설정</span>
                     <img
-                        src={open ? "/img/down.svg" : "/img/up.svg"}
+                        src={open ? `${assetBase}img/down.svg` : `${assetBase}img/up.svg`}
                         alt={open ? "아래 화살표" : "위 화살표"}
                         className="sidebar-arrow-img"
                     />
