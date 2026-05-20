@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './css/MenuPage.css';
 import Sidebar from '../components/Sidebar';
 import HomePreviewFrame from '../components/HomePreviewFrame';
-import { getMenuItems, addMenuItem, updateMenuItem } from '../utils/api';
+import { getMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from '../utils/api';
 
 const PRIMARY_CATEGORIES = ['추천', '신메뉴', '커피/음료', '디저트'];
 const SECONDARY_CATEGORIES = ['커피', '디카페인 커피', '음료', '티/라떼'];
@@ -256,6 +256,7 @@ function MenuPage() {
       const payload = {
         name: editName,
         price: editPrice,
+        image: selectedMenu.image,
         primary_category: editPrimaryCategory,
         secondary_category: editSecondaryCategory,
       };
@@ -281,11 +282,23 @@ function MenuPage() {
     }
   };
 
-  const handleDeleteMenu = (id) => {
-    const filtered = menuItems.filter(item => item.id !== id);
-    setMenuItems(filtered);
-    if (selectedMenu?.id === id) {
-      setSelectedMenu(filtered[0] || null);
+  const handleDeleteMenu = async (id) => {
+    try {
+      const result = await deleteMenuItem(id);
+      if (result.success) {
+        const filtered = menuItems.filter(item => item.id !== id);
+        setMenuItems(filtered);
+        if (selectedMenu?.id === id) {
+          setSelectedMenu(filtered[0] || null);
+        }
+        alert('메뉴가 삭제되었습니다.');
+      } else {
+        console.error('Failed to delete menu:', result.error);
+        alert('메뉴 삭제에 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('Delete menu error:', err);
+      alert('메뉴 삭제 중 오류가 발생했습니다.');
     }
   };
 
