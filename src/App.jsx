@@ -87,13 +87,14 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>
