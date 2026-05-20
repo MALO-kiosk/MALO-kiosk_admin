@@ -1,0 +1,87 @@
+.outline-frame {
+  width: 197px;
+  height: 66px;
+  box-sizing: border-box;
+  border: 2px solid #656666;
+  border-radius: 56px;
+  background: transparent;
+}
+
+button.outline-frame {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  appearance: none;
+}
+
+.outline-frame--home .outline-frame__inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-left: 24.92px;
+  padding-top: 11.55px;
+  box-sizing: border-box;
+  margin-top: 15px;
+  
+}
+
+/* ensure home icon displays at requested 20px */
+.outline-frame__icon--home {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.outline-frame__label--home {
+  color: #656666;
+  font-family: 'Pretendard', system-ui, sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 최초 진입 HomeScreen만 기본 정렬 — 모드 선택 이후 홈 OutlineFrame은 아이콘·「처음으로」 살짝 위로 */
+.outline-frame--home:not(.home-screen__back-frame) .outline-frame__inner {
+  padding-top: 6px;
+  transform: translateY(-4px);
+}
+
+.outline-frame--home:not(.home-screen__back-frame) .outline-frame__label--home {
+  margin: 0;
+  padding: 0;
+  font-size: 25px;
+}
+
+.outline-frame--staff {
+  position: relative;
+  padding: 10px;
+}
+
+.outline-frame__icon--bell {
+  position: absolute;
+  top: 15.5px;
+  right: 16px;
+  display: block;
+}
+
+.outline-frame__label--staff {
+  position: absolute;
+  top: 12.5px;
+  right: calc(19px + 27px + 7px);
+  color: #656666;
+  font-family: 'Pretendard', system-ui, sans-serif;
+  font-size: 31px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+}

@@ -11,6 +11,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+        if (loading) return;
         if (!email || !password) {
             setError('이메일과 비밀번호를 입력해주세요.');
             return;
@@ -25,10 +26,16 @@ const LoginPage = () => {
             if (result.success) {
                 setError('');
                 alert('로그인 성공!');
-                // 메뉴 페이지로 이동
-                navigate('/menu');
+                // First 페이지로 이동 (App의 경로와 일치)
+                navigate('/');
             } else {
-                setError('이메일 또는 비밀번호가 올바르지 않습니다.');
+                // 서버에서 전달된 에러 메시지를 우선 표시
+                const serverMessage = result.error || '이메일 또는 비밀번호가 올바르지 않습니다.';
+                if (serverMessage.toLowerCase().includes('email not confirmed') || serverMessage.toLowerCase().includes('confirm')) {
+                    setError('이메일이 확인되지 않았습니다. 등록하신 이메일의 확인 링크를 클릭하거나, 개발 중이면 Supabase에서 이메일 확인을 비활성화하세요.');
+                } else {
+                    setError(serverMessage);
+                }
             }
         } catch (err) {
             setError('로그인 중 오류가 발생했습니다.');
@@ -39,7 +46,7 @@ const LoginPage = () => {
     };
 
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !loading) {
             handleLogin();
         }
     };
@@ -91,7 +98,7 @@ const LoginPage = () => {
                     onClick={handleLogin}
                     disabled={loading}
                 >
-                    {loading ? '로그인 중...' : 'log in'}
+                    {loading ? 'Loading...' : 'log in'}
                 </button>
             </div>
             

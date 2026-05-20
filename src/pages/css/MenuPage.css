@@ -234,12 +234,12 @@
 .menu-page .menu-image-placeholder {
     width: 70%;
     height: 40%;
-    background: #E9E9E9;
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 24px;
+    background: #e1e1e1;
 }
 
 .menu-page .menu-image-placeholder img {
@@ -315,6 +315,27 @@
     font-size: 13px;
     color: #7D7D7D;
     cursor: pointer;
+}
+
+.menu-page .menu-select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    color: #4a4a4a;
+    cursor: pointer;
+}
+
+.menu-page .menu-select:focus {
+    outline: none;
+}
+
+.menu-page .menu-select:disabled {
+    color: #a0a0a0;
+    cursor: not-allowed;
 }
 
 .menu-page .menu-dropdown img {

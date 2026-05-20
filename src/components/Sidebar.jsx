@@ -1,34 +1,33 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './css/Sidebar.css';
+import { useAuth } from '../contexts/AuthContext';
 
 function Sidebar() {
     const [open, setOpen] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
-    const [activeItem, setActiveItem] = useState('첫화면');
-
+    const { logout } = useAuth();
     const menuItems = [
         { name: '첫화면', path: '/' },
         { name: '메뉴판', path: '/menu' },
         { name: '옵션', path: '/option' }
     ];
 
-    useEffect(() => {
-        const currentItem = menuItems.find(item => item.path === location.pathname);
-        if (currentItem) {
-            setActiveItem(currentItem.name);
-        }
-    }, [location.pathname]);
+    const activeItem = menuItems.find(item => item.path === location.pathname)?.name || '첫화면';
 
     const handleToggle = () => {
         setOpen((prev) => !prev);
     };
 
     const handleItemClick = (item) => {
-        setActiveItem(item.name);
         navigate(item.path);
+    };
+
+    const handleLogout = async () => {
+        await logout();
+        navigate('/login', { replace: true });
     };
 
     return (
@@ -57,7 +56,7 @@ function Sidebar() {
                     </ul>
                 )}
             </div>
-            <button className="sidebar-logout-btn">로그아웃</button>
+            <button className="sidebar-logout-btn" onClick={handleLogout}>로그아웃</button>
         </aside>
     );
 }

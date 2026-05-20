@@ -9,22 +9,39 @@ const SignUpPage = () => {
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
     const [error, setError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({
+        email: false,
+        name: false,
+        password: false,
+        rePassword: false,
+    });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSignUp = async () => {
-        // 입력값 검증
-        if (!email || !name || !password || !rePassword) {
+        if (loading) return;
+        // 입력값 검증 (필드별 에러 설정)
+        const newFieldErrors = { email: false, name: false, password: false, rePassword: false };
+        let hasError = false;
+        if (!email) { newFieldErrors.email = true; hasError = true; }
+        if (!name) { newFieldErrors.name = true; hasError = true; }
+        if (!password) { newFieldErrors.password = true; hasError = true; }
+        if (!rePassword) { newFieldErrors.rePassword = true; hasError = true; }
+
+        if (hasError) {
+            setFieldErrors(newFieldErrors);
             setError('모든 필드를 입력해주세요.');
             return;
         }
 
         if (password !== rePassword) {
+            setFieldErrors({ ...newFieldErrors, password: true, rePassword: true });
             setError('비밀번호가 일치하지 않습니다.');
             return;
         }
 
         if (password.length < 6) {
+            setFieldErrors({ ...newFieldErrors, password: true });
             setError('비밀번호는 최소 6자 이상이어야 합니다.');
             return;
         }
@@ -40,6 +57,8 @@ const SignUpPage = () => {
                 navigate('/login');
             } else {
                 setError(result.error || '회원가입 중 오류가 발생했습니다.');
+                // 서버 에러 발생 시 전체 필드 에러 해제 (선택)
+                setFieldErrors({ email:false, name:false, password:false, rePassword:false });
             }
         } catch (err) {
             setError('회원가입 중 오류가 발생했습니다.');
@@ -50,10 +69,16 @@ const SignUpPage = () => {
     };
 
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !loading) {
             handleSignUp();
         }
     };
+
+    // Clear field error when user types
+    const onEmailChange = (e) => { setEmail(e.target.value); setFieldErrors(prev => ({ ...prev, email: false })); };
+    const onNameChange = (e) => { setName(e.target.value); setFieldErrors(prev => ({ ...prev, name: false })); };
+    const onPasswordChange = (e) => { setPassword(e.target.value); setFieldErrors(prev => ({ ...prev, password: false })); };
+    const onRePasswordChange = (e) => { setRePassword(e.target.value); setFieldErrors(prev => ({ ...prev, rePassword: false })); };
 
     return (
         <div className="signup-container">
@@ -65,50 +90,50 @@ const SignUpPage = () => {
                     <input 
                         type="email" 
                         placeholder="email" 
-                        className="signup-input"
+                        className={`signup-input ${fieldErrors.email ? 'error' : ''}`}
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={onEmailChange}
                         disabled={loading}
                     />
-                    <img src="/img/majesticons_mail-line.svg" alt="Mail Icon" className="signup-input-icon" />
+                    <img src="/img/majesticons_mail-line.svg" alt="Mail Icon" className={`signup-input-icon ${fieldErrors.email ? 'error' : ''}`} />
                 </div>
 
                 <div className="signup-input-wrapper">
                     <input 
                         type="text" 
                         placeholder="name" 
-                        className="signup-input"
+                        className={`signup-input ${fieldErrors.name ? 'error' : ''}`}
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={onNameChange}
                         disabled={loading}
                     />
-                    <img src="/img/hugeicons_user-03.svg" alt="User Icon" className="signup-input-icon" />
+                    <img src="/img/hugeicons_user-03.svg" alt="User Icon" className={`signup-input-icon ${fieldErrors.name ? 'error' : ''}`} />
                 </div>
                 
                 <div className="signup-input-wrapper">
                     <input 
                         type="password" 
                         placeholder="password" 
-                        className="signup-input"
+                        className={`signup-input ${fieldErrors.password ? 'error' : ''}`}
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={onPasswordChange}
                         onKeyPress={handleKeyPress}
                         disabled={loading}
                     />
-                    <img src="/img/prime_lock.svg" alt="Lock Icon" className="signup-input-icon" />
+                    <img src="/img/prime_lock.svg" alt="Lock Icon" className={`signup-input-icon ${fieldErrors.password ? 'error' : ''}`} />
                 </div>
 
                 <div className="signup-input-wrapper">
                     <input 
                         type="password" 
                         placeholder="re-enter password" 
-                        className={`signup-input ${error ? 'error' : ''}`}
+                        className={`signup-input ${fieldErrors.rePassword ? 'error' : ''}`}
                         value={rePassword}
-                        onChange={(e) => setRePassword(e.target.value)}
+                        onChange={onRePasswordChange}
                         onKeyPress={handleKeyPress}
                         disabled={loading}
                     />
-                    <img src="/img/prime_lock.svg" alt="Lock Icon" className={`signup-input-icon ${error ? 'error' : ''}`} />
+                    <img src="/img/prime_lock.svg" alt="Lock Icon" className={`signup-input-icon ${fieldErrors.rePassword ? 'error' : ''}`} />
                 </div>
 
                 {error && <p className="error-message">* {error}</p>}
@@ -118,7 +143,7 @@ const SignUpPage = () => {
                     onClick={handleSignUp}
                     disabled={loading}
                 >
-                    {loading ? '회원가입 중...' : 'create an account'}
+                    {loading ? 'Loading...' : 'create an account'}
                 </button>
             </div>
             
