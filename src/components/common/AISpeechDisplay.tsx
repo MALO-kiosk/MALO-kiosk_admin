@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import './AISpeechDisplay.css'
 
-const personIcon = '/img/hugeicons_user-03.svg'
+const personIcon = `${import.meta.env.BASE_URL}img/hugeicons_user-03.svg`
 
 export type AISpeechDisplayProps = {
   /** 안내 문구 */

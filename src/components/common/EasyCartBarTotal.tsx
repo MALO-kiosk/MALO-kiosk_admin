@@ -4,7 +4,7 @@ import minusIcon from '../../assets/icons/minus_icon.svg'
 import plusIcon from '../../assets/icons/plus_icon.svg'
 import './EasyCartBarTotal.css'
 
-const defaultMenuImage = '/img/Mask%20group.png'
+const defaultMenuImage = `${import.meta.env.BASE_URL}img/Mask%20group.png`
 
 export type EasyCartBarTotalProps = {
   /** 메뉴 썸네일 */

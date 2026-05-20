@@ -1,8 +1,8 @@
 import type { KeyboardEvent } from 'react'
 import './CommonMenuProductCard.css'
 
-const menuStrawberryImg = '/img/Mask%20group.png'
-const menuPlaceholderImg = '/img/noImage.svg'
+const menuStrawberryImg = `${import.meta.env.BASE_URL}img/Mask%20group.png`
+const menuPlaceholderImg = `${import.meta.env.BASE_URL}img/noImage.svg`
 
 export type CommonMenuProductCardProps = {
   imageSrc?: string

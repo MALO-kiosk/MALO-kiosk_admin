@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import './EasyMenu.css'
 
-const defaultMenuImage = '/img/Mask%20group.png'
+const defaultMenuImage = `${import.meta.env.BASE_URL}img/Mask%20group.png`
 
 export type EasyMenuProps = {
   /** 메뉴명 */

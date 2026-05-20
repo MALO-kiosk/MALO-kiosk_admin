@@ -1,6 +1,6 @@
 import './OrderTotalBar.css'
 
-const lineIcon = '/img/line.svg'
+const lineIcon = `${import.meta.env.BASE_URL}img/line.svg`
 
 export type OrderTotalBarProps = {
   /** 백엔드 연동 전까지 기본값 1 */

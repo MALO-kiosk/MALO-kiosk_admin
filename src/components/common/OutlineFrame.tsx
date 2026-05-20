@@ -1,8 +1,8 @@
 import type { CSSProperties } from 'react'
 import './OutlineFrame.css'
 
-const bellIcon = '/img/bell_icon.svg'
-const homeIcon = '/img/homeIcon.svg'
+const bellIcon = `${import.meta.env.BASE_URL}img/bell_icon.svg`
+const homeIcon = `${import.meta.env.BASE_URL}img/homeIcon.svg`
 
 export type OutlineFrameVariant = 'home' | 'staff'
 

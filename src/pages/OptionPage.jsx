@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar';
 import HomePreviewFrame from '../components/HomePreviewFrame';
 
 function OptionPage() {
+  const assetBase = import.meta.env.BASE_URL;
   const [_images] = useState([null, null, null]);
   const [_previewIndex] = useState(null);
   const [groupName, setGroupName] = useState('');
@@ -71,7 +72,7 @@ function OptionPage() {
   return (
     <div className="option-page">
       <nav className="main-navbar">
-        <img src="/img/MALO.svg" alt="MALO Logo" className="main-navbar-logo" />
+        <img src={`${assetBase}img/MALO.svg`} alt="MALO Logo" className="main-navbar-logo" />
         <span className="main-navbar-right">미림점 1번 키오스크</span>
       </nav>
       <Sidebar />

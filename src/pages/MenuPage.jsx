@@ -3,9 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './css/MenuPage.css';
 import Sidebar from '../components/Sidebar';
 import HomePreviewFrame from '../components/HomePreviewFrame';
-import { getMenuItems } from '../utils/api';
-import { addMenuItem } from '../utils/api';
-import { updateMenuItem } from '../utils/api';
+import { getMenuItems, addMenuItem, updateMenuItem } from '../utils/api';
 
 const PRIMARY_CATEGORIES = ['추천', '신메뉴', '커피/음료', '디저트'];
 const SECONDARY_CATEGORIES = ['커피', '디카페인 커피', '음료', '티/라떼'];
@@ -47,6 +45,16 @@ const inferCoffeeDetailCategoryByName = (name) => {
 };
 
 function MenuPage() {
+  const assetBase = import.meta.env.BASE_URL;
+  const normalizeImage = (img) => {
+    if (!img) return `${assetBase}img/noImage.svg`;
+    if (typeof img !== 'string') return img;
+    const trimmed = img.trim();
+    if (trimmed.startsWith('data:') || trimmed.startsWith('http')) return trimmed;
+    if (trimmed.startsWith('/')) return `${assetBase}${trimmed.replace(/^\//, '')}`;
+    if (trimmed.startsWith('img/')) return `${assetBase}${trimmed}`;
+    return trimmed;
+  };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedMode, setSelectedMode] = useState('미리보기'); // 현재 메인에 표시될 모드
 
@@ -65,7 +73,7 @@ function MenuPage() {
   // 새 메뉴 추가 입력 필드
   const [addName, setAddName] = useState('');
   const [addPrice, setAddPrice] = useState('');
-  const [addImage, setAddImage] = useState('/img/noImage.svg');
+  const [addImage, setAddImage] = useState(`${assetBase}img/noImage.svg`);
   const [addPrimaryCategory, setAddPrimaryCategory] = useState(PRIMARY_CATEGORIES[0]);
   const [addSecondaryCategory, setAddSecondaryCategory] = useState(SECONDARY_CATEGORIES[0]);
   const [isAddingMenu, setIsAddingMenu] = useState(false);
@@ -169,8 +177,10 @@ function MenuPage() {
         };
         const result = await addMenuItem(payload);
         if (result.success && result.data && result.data.length > 0) {
+          const rawCreated = result.data[0];
           const created = {
-            ...result.data[0],
+            ...rawCreated,
+            image: normalizeImage(rawCreated.image || addImage),
             primary_category: addPrimaryCategory,
             secondary_category: addPrimaryCategory === '디저트' ? null : addSecondaryCategory,
           };
@@ -182,7 +192,7 @@ function MenuPage() {
           setEditSecondaryCategory(created.primary_category === '디저트' ? null : (created.secondary_category || SECONDARY_CATEGORIES[0]));
           setAddName('');
           setAddPrice('');
-          setAddImage('/img/noImage.svg');
+          setAddImage(`${assetBase}img/noImage.svg`);
           setAddPrimaryCategory(PRIMARY_CATEGORIES[0]);
           setAddSecondaryCategory(SECONDARY_CATEGORIES[0]);
         } else {
@@ -203,7 +213,7 @@ function MenuPage() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setAddImage(event.target?.result || '/img/noImage.svg');
+        setAddImage(event.target?.result || `${assetBase}img/noImage.svg`);
       };
       reader.readAsDataURL(file);
     }
@@ -215,8 +225,12 @@ function MenuPage() {
       try {
         const res = await getMenuItems();
         if (res.success && Array.isArray(res.data)) {
-          setMenuItems(res.data);
-          const first = res.data[0] || null;
+          const normalized = res.data.map((it) => ({
+            ...it,
+            image: normalizeImage(it.image),
+          }));
+          setMenuItems(normalized);
+          const first = normalized[0] || null;
           setSelectedMenu(first);
           setEditName(first?.name || '');
           setEditPrice(first?.price || '');
@@ -248,7 +262,8 @@ function MenuPage() {
 
       const result = await updateMenuItem(selectedMenu.id, payload);
       if (result.success && result.data && result.data.length > 0) {
-        const updated = result.data[0];
+        const rawUpdated = result.data[0];
+        const updated = { ...rawUpdated, image: normalizeImage(rawUpdated.image) };
         setMenuItems(menuItems.map((item) =>
           item.id === selectedMenu.id ? updated : item,
         ));
@@ -279,7 +294,7 @@ function MenuPage() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        const imageData = event.target?.result || '/img/noImage.svg';
+        const imageData = event.target?.result || `${assetBase}img/noImage.svg`;
         if (selectedMenu) {
           setMenuItems(menuItems.map(item =>
             item.id === selectedMenu.id
@@ -299,7 +314,7 @@ function MenuPage() {
   return (
     <div className="menu-page">
       <nav className="main-navbar">
-        <img src="/img/MALO.svg" alt="MALO Logo" className="main-navbar-logo" />
+        <img src={`${assetBase}img/MALO.svg`} alt="MALO Logo" className="main-navbar-logo" />
         <span className="main-navbar-right">미림점 1번 키오스크</span>
       </nav>
       <Sidebar />
@@ -310,7 +325,7 @@ function MenuPage() {
             <div className="menu-control-main" onClick={handleMainClick}>
               <span>{selectedMode}</span>
               <img 
-                src={isMenuOpen ? "/img/up.svg" : "/img/down.svg"} 
+                src={isMenuOpen ? `${assetBase}img/up.svg` : `${assetBase}img/down.svg`} 
                 alt="arrow" 
                 className="control-arrow" 
               />
@@ -459,7 +474,7 @@ function MenuPage() {
                         justifyContent: 'center',
                       }}
                     >
-                      <img src="/img/x.svg" alt="delete" style={{ width: '20px', height: '20px' }} />
+                      <img src={`${assetBase}img/x.svg`} alt="delete" style={{ width: '20px', height: '20px' }} />
                     </button>
                   </div>
                 ))}
@@ -471,7 +486,7 @@ function MenuPage() {
               <h2 className="menu-add-title">메뉴추가</h2>
               <div className="menu-add-card">
                 <div className="menu-image-placeholder" onClick={() => document.getElementById('image-upload-add')?.click()}>
-                  <img src={addImage} alt="menu" className={addImage !== '/img/noImage.svg' ? "full-image" : ""} />
+                  <img src={addImage} alt="menu" className={addImage !== `${assetBase}img/noImage.svg` ? "full-image" : ""} />
                   <input 
                     id="image-upload-add"
                     type="file" 
