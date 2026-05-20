@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './css/SignUpPage.css';
 import { signupUser } from '../utils/api';
 
 const SignUpPage = () => {
+    const assetBase = import.meta.env.BASE_URL;
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
@@ -82,7 +83,7 @@ const SignUpPage = () => {
 
     return (
         <div className="signup-container">
-            <img src="/img/MALO_color.svg" alt="MALO Logo" className="signup-logo" />
+            <img src={`${assetBase}img/MALO_color.svg`} alt="MALO Logo" className="signup-logo" />
             <h1 className="signup-title">키오스크 관리자 회원가입</h1>
             
             <div className="signup-input-group">
@@ -95,7 +96,7 @@ const SignUpPage = () => {
                         onChange={onEmailChange}
                         disabled={loading}
                     />
-                    <img src="/img/majesticons_mail-line.svg" alt="Mail Icon" className={`signup-input-icon ${fieldErrors.email ? 'error' : ''}`} />
+                    <img src={`${assetBase}img/majesticons_mail-line.svg`} alt="Mail Icon" className={`signup-input-icon ${fieldErrors.email ? 'error' : ''}`} />
                 </div>
 
                 <div className="signup-input-wrapper">
@@ -107,7 +108,7 @@ const SignUpPage = () => {
                         onChange={onNameChange}
                         disabled={loading}
                     />
-                    <img src="/img/hugeicons_user-03.svg" alt="User Icon" className={`signup-input-icon ${fieldErrors.name ? 'error' : ''}`} />
+                    <img src={`${assetBase}img/hugeicons_user-03.svg`} alt="User Icon" className={`signup-input-icon ${fieldErrors.name ? 'error' : ''}`} />
                 </div>
                 
                 <div className="signup-input-wrapper">
@@ -120,7 +121,7 @@ const SignUpPage = () => {
                         onKeyPress={handleKeyPress}
                         disabled={loading}
                     />
-                    <img src="/img/prime_lock.svg" alt="Lock Icon" className={`signup-input-icon ${fieldErrors.password ? 'error' : ''}`} />
+                    <img src={`${assetBase}img/prime_lock.svg`} alt="Lock Icon" className={`signup-input-icon ${fieldErrors.password ? 'error' : ''}`} />
                 </div>
 
                 <div className="signup-input-wrapper">
@@ -133,7 +134,7 @@ const SignUpPage = () => {
                         onKeyPress={handleKeyPress}
                         disabled={loading}
                     />
-                    <img src="/img/prime_lock.svg" alt="Lock Icon" className={`signup-input-icon ${fieldErrors.rePassword ? 'error' : ''}`} />
+                    <img src={`${assetBase}img/prime_lock.svg`} alt="Lock Icon" className={`signup-input-icon ${fieldErrors.rePassword ? 'error' : ''}`} />
                 </div>
 
                 {error && <p className="error-message">* {error}</p>}
@@ -147,7 +148,7 @@ const SignUpPage = () => {
                 </button>
             </div>
             
-            <a href="/login" className="login-link">Already have an account? Log in</a>
+            <Link to="/login" className="login-link">Already have an account? Log in</Link>
         </div>
     );
 };

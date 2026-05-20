@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './css/LoginPage.css';
 import { loginUser } from '../utils/api';
 
 const LoginPage = () => {
+    const assetBase = import.meta.env.BASE_URL;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -53,7 +54,7 @@ const LoginPage = () => {
 
     return (
         <div className="login-container">
-            <img src="/img/MALO_color.svg" alt="MALO Logo" className="login-logo" />
+            <img src={`${assetBase}img/MALO_color.svg`} alt="MALO Logo" className="login-logo" />
             <h1 className="login-title">키오스크 관리자 로그인</h1>
             
             <div className="login-input-group">
@@ -68,7 +69,7 @@ const LoginPage = () => {
                         disabled={loading}
                     />
                     <img 
-                        src="/img/majesticons_mail-line.svg" 
+                        src={`${assetBase}img/majesticons_mail-line.svg`} 
                         alt="Mail Icon" 
                         className={`login-input-icon ${error ? 'error' : ''}`} 
                     />
@@ -85,7 +86,7 @@ const LoginPage = () => {
                         disabled={loading}
                     />
                     <img 
-                        src="/img/prime_lock.svg" 
+                        src={`${assetBase}img/prime_lock.svg`} 
                         alt="Lock Icon" 
                         className={`login-input-icon ${error ? 'error' : ''}`} 
                     />
@@ -102,7 +103,7 @@ const LoginPage = () => {
                 </button>
             </div>
             
-            <a href="/signup" className="create-account-link">create an account</a>
+            <Link to="/signup" className="create-account-link">create an account</Link>
         </div>
     );
 };
