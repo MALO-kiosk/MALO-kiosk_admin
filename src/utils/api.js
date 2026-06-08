@@ -4,6 +4,26 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const SUPABASE_SERVICE_ROLE_KEY = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
+const toUnitPriceWon = (value) => {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string') {
+    const parsed = Number(value.replace(/[^0-9]/g, ''));
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
+};
+
+const formatPriceLabel = (value) => `${toUnitPriceWon(value).toLocaleString('ko-KR')}원`;
+
+const normalizeMenuItem = (item) => {
+  const unitPriceWon = toUnitPriceWon(item?.unit_price_won ?? item?.price);
+  return {
+    ...item,
+    unit_price_won: unitPriceWon,
+    price: formatPriceLabel(unitPriceWon),
+  };
+};
+
 const supabaseAuthOptions = {
   auth: {
     autoRefreshToken: true,
@@ -91,7 +111,7 @@ export const getMenuItems = async () => {
       .select('*')
       .order('created_at', { ascending: true });
     if (error) throw error;
-    return { success: true, data };
+    return { success: true, data: Array.isArray(data) ? data.map(normalizeMenuItem) : data };
   } catch (error) {
     console.error('Menu Fetch Error:', error);
     return { success: false, error: error.message };
@@ -101,12 +121,19 @@ export const getMenuItems = async () => {
 // 메뉴 추가
 export const addMenuItem = async (menuData) => {
   try {
+    const unitPriceWon = toUnitPriceWon(menuData?.unit_price_won ?? menuData?.price);
+    const payload = {
+      ...menuData,
+      unit_price_won: unitPriceWon,
+    };
+    delete payload.price;
+
     const { data, error } = await supabase
       .from('menu_items')
-      .insert([menuData])
+      .insert([payload])
       .select();
     if (error) throw error;
-    return { success: true, data };
+    return { success: true, data: Array.isArray(data) ? data.map(normalizeMenuItem) : data };
   } catch (error) {
     console.error('Menu Add Error:', error);
     return { success: false, error: error.message };
@@ -116,13 +143,20 @@ export const addMenuItem = async (menuData) => {
 // 메뉴 수정
 export const updateMenuItem = async (id, menuData) => {
   try {
+    const unitPriceWon = toUnitPriceWon(menuData?.unit_price_won ?? menuData?.price);
+    const payload = {
+      ...menuData,
+      unit_price_won: unitPriceWon,
+    };
+    delete payload.price;
+
     const { data, error } = await supabase
       .from('menu_items')
-      .update(menuData)
+      .update(payload)
       .eq('id', id)
       .select();
     if (error) throw error;
-    return { success: true, data };
+    return { success: true, data: Array.isArray(data) ? data.map(normalizeMenuItem) : data };
   } catch (error) {
     console.error('Menu Update Error:', error);
     return { success: false, error: error.message };

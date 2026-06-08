@@ -1,11 +1,12 @@
 import type { EasyCartLineItem } from '../common'
 
-const assetBase = import.meta.env.BASE_URL;
+const assetBase = '/MALO-kiosk_admin/';
 
 export type CommonMenuSeedItem = {
   id: number
   name: string
   price: string
+  unitPriceWon?: number
   image: string
   primary_category?: string
   secondary_category?: string
@@ -16,11 +17,11 @@ export type CommonMenuSeedItem = {
 }
 
 export const COMMON_MENU_SEED_ITEMS: CommonMenuSeedItem[] = [
-  { id: 1, name: '아메리카노', price: '3,000원', image: `${assetBase}img/coffee.svg` },
-  { id: 2, name: '카페라떼', price: '3,500원', image: `${assetBase}img/latte.svg` },
-  { id: 3, name: '녹차', price: '3,000원', image: `${assetBase}img/tea.svg` },
-  { id: 4, name: '스트로베리말차', price: '3,900원', image: `${assetBase}img/Rectangle.svg` },
-  { id: 5, name: '에스프레소', price: '2,500원', image: `${assetBase}img/coffee.svg` },
+  { id: 1, name: '아메리카노', price: '3,000원', unitPriceWon: 3000, image: `${assetBase}img/coffee.svg` },
+  { id: 2, name: '카페라떼', price: '3,500원', unitPriceWon: 3500, image: `${assetBase}img/latte.svg` },
+  { id: 3, name: '녹차', price: '3,000원', unitPriceWon: 3000, image: `${assetBase}img/tea.svg` },
+  { id: 4, name: '스트로베리말차', price: '3,900원', unitPriceWon: 3900, image: `${assetBase}img/Rectangle.svg` },
+  { id: 5, name: '에스프레소', price: '2,500원', unitPriceWon: 2500, image: `${assetBase}img/coffee.svg` },
 ]
 
 export type CommonMenuDummyProduct = {

@@ -5,6 +5,8 @@ import Sidebar from '../components/Sidebar';
 import HomePreviewFrame from '../components/HomePreviewFrame';
 import { getMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from '../utils/api';
 
+const assetBase = import.meta.env.BASE_URL;
+
 const PRIMARY_CATEGORIES = ['추천', '신메뉴', '커피/음료', '디저트'];
 const SECONDARY_CATEGORIES = ['커피', '디카페인 커피', '음료', '티/라떼'];
 
@@ -45,7 +47,20 @@ const inferCoffeeDetailCategoryByName = (name) => {
 };
 
 function MenuPage() {
-  const assetBase = import.meta.env.BASE_URL;
+  const formatPriceLabel = (value) => {
+    const priceWon = Number(value) || 0;
+    return `${priceWon.toLocaleString('ko-KR')}원`;
+  };
+
+  const toUnitPriceWon = (value) => {
+    if (typeof value === 'number' && Number.isFinite(value)) return value;
+    if (typeof value === 'string') {
+      const parsed = Number(value.replace(/[^0-9]/g, ''));
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+    return 0;
+  };
+
   const normalizeImage = (img) => {
     if (!img) return `${assetBase}img/noImage.svg`;
     if (typeof img !== 'string') return img;
@@ -94,7 +109,7 @@ function MenuPage() {
 
     setSelectedMenu(item);
     setEditName(item.name);
-    setEditPrice(item.price);
+    setEditPrice(item.price || formatPriceLabel(item.unit_price_won));
     setEditPrimaryCategory(primary);
     setEditSecondaryCategory(primary === '디저트' ? null : (inferredSecondary || SECONDARY_CATEGORIES[0]));
   };
@@ -145,7 +160,7 @@ function MenuPage() {
       const timerId = window.setTimeout(() => {
         setSelectedMenu(firstVisible);
         setEditName(firstVisible?.name || '');
-        setEditPrice(firstVisible?.price || '');
+        setEditPrice(firstVisible?.price || formatPriceLabel(firstVisible?.unit_price_won));
         const firstPrimary = firstVisible?.primary_category || firstVisible?.category_primary || firstVisible?.category || PRIMARY_CATEGORIES[0];
         setEditPrimaryCategory(firstPrimary);
         setEditSecondaryCategory(
@@ -168,9 +183,10 @@ function MenuPage() {
     (async () => {
       setIsAddingMenu(true);
       try {
+        const unitPriceWon = toUnitPriceWon(addPrice);
         const payload = {
           name: addName,
-          price: addPrice,
+          unit_price_won: unitPriceWon,
           image: addImage,
           primary_category: addPrimaryCategory,
           secondary_category: addPrimaryCategory === '디저트' ? null : addSecondaryCategory,
@@ -183,11 +199,12 @@ function MenuPage() {
             image: normalizeImage(rawCreated.image || addImage),
             primary_category: addPrimaryCategory,
             secondary_category: addPrimaryCategory === '디저트' ? null : addSecondaryCategory,
+            price: rawCreated.price || formatPriceLabel(rawCreated.unit_price_won),
           };
           setMenuItems([...menuItems, created]);
           setSelectedMenu(created);
           setEditName(created.name || '');
-          setEditPrice(created.price || '');
+          setEditPrice(created.price || formatPriceLabel(created.unit_price_won));
           setEditPrimaryCategory(created.primary_category || PRIMARY_CATEGORIES[0]);
           setEditSecondaryCategory(created.primary_category === '디저트' ? null : (created.secondary_category || SECONDARY_CATEGORIES[0]));
           setAddName('');
@@ -228,12 +245,13 @@ function MenuPage() {
           const normalized = res.data.map((it) => ({
             ...it,
             image: normalizeImage(it.image),
+            price: it.price || formatPriceLabel(it.unit_price_won),
           }));
           setMenuItems(normalized);
           const first = normalized[0] || null;
           setSelectedMenu(first);
           setEditName(first?.name || '');
-          setEditPrice(first?.price || '');
+          setEditPrice(first?.price || formatPriceLabel(first?.unit_price_won));
           const firstPrimary = first?.primary_category || first?.category_primary || first?.category || PRIMARY_CATEGORIES[0];
           setEditPrimaryCategory(firstPrimary);
           setEditSecondaryCategory(
@@ -253,9 +271,10 @@ function MenuPage() {
     if (!selectedMenu) return;
     setIsUpdatingMenu(true);
     try {
+      const unitPriceWon = toUnitPriceWon(editPrice);
       const payload = {
         name: editName,
-        price: editPrice,
+        unit_price_won: unitPriceWon,
         image: selectedMenu.image,
         primary_category: editPrimaryCategory,
         secondary_category: editSecondaryCategory,
@@ -264,7 +283,11 @@ function MenuPage() {
       const result = await updateMenuItem(selectedMenu.id, payload);
       if (result.success && result.data && result.data.length > 0) {
         const rawUpdated = result.data[0];
-        const updated = { ...rawUpdated, image: normalizeImage(rawUpdated.image) };
+        const updated = {
+          ...rawUpdated,
+          image: normalizeImage(rawUpdated.image),
+          price: rawUpdated.price || formatPriceLabel(rawUpdated.unit_price_won),
+        };
         setMenuItems(menuItems.map((item) =>
           item.id === selectedMenu.id ? updated : item,
         ));

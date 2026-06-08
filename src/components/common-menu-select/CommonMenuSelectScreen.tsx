@@ -156,6 +156,9 @@ export function CommonMenuSelectScreen({
     const target = menu ?? menuItems[0]
     if (!target) return
 
+    const fallbackPriceWon = parseInt(target.price.replace(/[^0-9]/g, '')) || 0
+    const unitPriceWon = target.unitPriceWon ?? fallbackPriceWon
+
     setCartLines((prev) => {
       const targetId = String(target.id)
       const existingIndex = prev.findIndex((line) => line.id === targetId)
@@ -166,7 +169,7 @@ export function CommonMenuSelectScreen({
           {
             id: targetId,
             name: target.name,
-            unitPriceWon: parseInt(target.price.replace(/[^0-9]/g, '')) || 0,
+            unitPriceWon,
             imageSrc: target.image,
             quantity: 1,
           },
