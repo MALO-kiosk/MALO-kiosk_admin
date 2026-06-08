@@ -70,8 +70,6 @@ function MenuPage() {
     if (trimmed.startsWith('img/')) return `${assetBase}${trimmed}`;
     return trimmed;
   };
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedMode, setSelectedMode] = useState('미리보기'); // 현재 메인에 표시될 모드
 
   // 메뉴 리스트 데이터 (DB에서 로드)
   const [menuItems, setMenuItems] = useState([]);
@@ -93,15 +91,6 @@ function MenuPage() {
   const [addSecondaryCategory, setAddSecondaryCategory] = useState(SECONDARY_CATEGORIES[0]);
   const [isAddingMenu, setIsAddingMenu] = useState(false);
   const [isUpdatingMenu, setIsUpdatingMenu] = useState(false);
-
-  const handleMainClick = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleSubItemClick = (mode) => {
-    setSelectedMode(mode);
-    setIsMenuOpen(false);
-  };
 
   const handleMenuItemClick = (item) => {
     const primary = item?.primary_category || item?.category_primary || item?.category || PRIMARY_CATEGORIES[0];
@@ -344,9 +333,6 @@ function MenuPage() {
     }
   };
 
-  // 선택되지 않은 나머지 모드 찾기
-  const otherMode = selectedMode === '미리보기' ? '쉬운모드' : '미리보기';
-
   return (
     <div className="menu-page">
       <nav className="main-navbar">
@@ -358,24 +344,9 @@ function MenuPage() {
         <h1 className="main-title">메뉴판</h1>
         <div className="main-layout">
           <div className="menu-control-container">
-            <div className="menu-control-main" onClick={handleMainClick}>
-              <span>{selectedMode}</span>
-              <img 
-                src={isMenuOpen ? `${assetBase}img/up.svg` : `${assetBase}img/down.svg`} 
-                alt="arrow" 
-                className="control-arrow" 
-              />
+            <div className="menu-control-main">
+              <span>미리보기</span>
             </div>
-            {isMenuOpen && (
-              <div className="menu-control-dropdown">
-                <div 
-                  className="menu-control-sub-item"
-                  onClick={() => handleSubItemClick(otherMode)}
-                >
-                  <span>{otherMode}</span>
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="home-preview-frame">
