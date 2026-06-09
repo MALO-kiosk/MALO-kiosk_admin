@@ -123,9 +123,20 @@
     outline: none;
 }
 
-.option-page .option-add-button {
+.option-page .option-add-button:hover {
+    background: #3A66B3;
+}
+
+.option-page .option-action-buttons {
     width: 80%;
-    height: 80px;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.option-page .option-add-button {
+    flex: 1;
+    height: 60px;
     background: #4880EE;
     color: #FFF;
     font-family: 'Pretendard', sans-serif;
@@ -133,11 +144,126 @@
     font-size: 17px;
     border-radius: 5px;
     border: none;
-    margin-top: 20px;
-    margin-bottom: 20px;
     cursor: pointer;
 }
 
-.option-page .option-add-button:hover {
-    background: #3A66B3;
+.option-page .option-cancel-button {
+    flex: 1;
+    height: 60px;
+    background: #FF4D4F;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 500;
+    font-size: 17px;
 }
+
+.option-page .option-cancel-button:hover {
+    background: #D93639;
+}
+
+.option-page .option-management-container {
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+}
+
+.option-page .option-list-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-top: 20px;
+}
+
+.option-page .option-list-title {
+    position: absolute;
+    top: -46px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: #1F1F1F;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.option-page .option-list-card {
+    width: 350px;
+    height: 190px;
+    background: #FFF;
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.option-page .option-list-container {
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 스크롤바 스타일 */
+.option-page .option-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+.option-page .option-list-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.option-page .option-list-container::-webkit-scrollbar-thumb {
+    background: #DDD;
+    border-radius: 10px;
+}
+
+.option-page .option-item-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #F0F0F0;
+    padding: 10px 0;
+}
+
+.option-page .option-item-name {
+    flex: 2;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1F1F1F;
+    text-align: left;
+}
+
+.option-page .option-item-price {
+    flex: 1;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.option-page .option-item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.option-page .action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-page .action-btn img {
+    width: 22px;
+    height: 22px;
+}
+

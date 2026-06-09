@@ -8,7 +8,7 @@ import { getMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from '../ut
 const assetBase = import.meta.env.BASE_URL;
 
 const PRIMARY_CATEGORIES = ['추천', '신메뉴', '커피/음료', '디저트'];
-const SECONDARY_CATEGORIES = ['커피', '디카페인 커피', '음료', '티/라떼'];
+const SECONDARY_CATEGORIES = ['커피', '디카페인', '음료', '티/라떼'];
 
 const normalizePrimaryCategory = (value) => {
   if (!value) return null;

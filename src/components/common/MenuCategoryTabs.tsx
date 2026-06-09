@@ -31,7 +31,7 @@ type CoffeeDetailDef = {
 /** 추천 정렬선 아래 49px — 같은 73px 들여쓰기에서 (39) 간격으로 나열 */
 const COFFEE_DETAIL_TABS: CoffeeDetailDef[] = [
   { id: 'coffee', label: '커피', gapBefore: 0 },
-  { id: 'decaf', label: '디카페인 커피', gapBefore: 39 },
+  { id: 'decaf', label: '디카페인', gapBefore: 39 },
   { id: 'drink', label: '음료', gapBefore: 39 },
   { id: 'tea', label: '티/라떼', gapBefore: 39 },
 ]

@@ -255,6 +255,68 @@ export const addOptionItem = async (item) => {
   }
 };
 
+// 옵션 아이템 수정
+export const updateOptionItem = async (id, item) => {
+  try {
+    const { data, error } = await supabase
+      .from('option_items')
+      .update(item)
+      .eq('id', id)
+      .select();
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Option Item Update Error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// 옵션 아이템 삭제
+export const deleteOptionItem = async (id) => {
+  try {
+    const { error } = await supabase
+      .from('option_items')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.error('Option Item Delete Error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// 옵션 그룹 삭제
+export const deleteOptionGroup = async (id) => {
+  try {
+    const { error } = await supabase
+      .from('option_groups')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.error('Option Group Delete Error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// 옵션 그룹 수정
+export const updateOptionGroup = async (id, group) => {
+  try {
+    const { data, error } = await supabase
+      .from('option_groups')
+      .update(group)
+      .eq('id', id)
+      .select();
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Option Group Update Error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
 // 배너 업로드
 export const uploadBanner = async (file, position) => {
   try {
@@ -411,4 +473,12 @@ export default {
   addOption,
   updateOption,
   deleteOption,
+  getCustomOptions,
+  getOptionGroupByName,
+  addOptionGroup,
+  updateOptionGroup,
+  deleteOptionGroup,
+  addOptionItem,
+  updateOptionItem,
+  deleteOptionItem,
 };
