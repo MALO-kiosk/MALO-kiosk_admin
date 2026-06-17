@@ -74,7 +74,7 @@ function MenuPage() {
   // 메뉴 리스트 데이터 (DB에서 로드)
   const [menuItems, setMenuItems] = useState([]);
   const [activePrimaryCategory, setActivePrimaryCategory] = useState('coffee');
-  const [activeCoffeeDetailCategory, setActiveCoffeeDetailCategory] = useState('coffee');
+  const [activeCoffeeDetailCategory, setActiveCoffeeDetailCategory] = useState('drink');
 
   // 선택된 메뉴 상태
   const [selectedMenu, setSelectedMenu] = useState(null);

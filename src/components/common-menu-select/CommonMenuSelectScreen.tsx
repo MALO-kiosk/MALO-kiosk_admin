@@ -47,7 +47,7 @@ export function CommonMenuSelectScreen({
   const [localActivePrimaryCategory, setLocalActivePrimaryCategory] =
     useState<MenuCategoryId>('coffee')
   const [localActiveCoffeeDetailCategory, setLocalActiveCoffeeDetailCategory] =
-    useState<CoffeeDetailCategoryId>('coffee')
+    useState<CoffeeDetailCategoryId>('drink')
 
   const resolvedPrimaryCategory = controlledPrimaryCategory ?? localActivePrimaryCategory
   const resolvedCoffeeDetailCategory = controlledCoffeeDetailCategory ?? localActiveCoffeeDetailCategory

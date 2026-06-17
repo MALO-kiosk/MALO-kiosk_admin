@@ -56,7 +56,7 @@ export function MenuCategoryTabs({
   const [uncontrolledActiveId, setUncontrolledActiveId] =
     React.useState<MenuCategoryId>(initialActiveId)
   const [uncontrolledActiveCoffeeDetail, setUncontrolledActiveCoffeeDetail] =
-    React.useState<CoffeeDetailCategoryId>('coffee')
+    React.useState<CoffeeDetailCategoryId>('drink')
 
   const activeId = controlledActiveId ?? uncontrolledActiveId
   const activeCoffeeDetail = controlledActiveCoffeeDetail ?? uncontrolledActiveCoffeeDetail
