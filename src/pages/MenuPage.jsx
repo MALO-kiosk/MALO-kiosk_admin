@@ -196,6 +196,13 @@ function MenuPage() {
           setEditPrice(created.price || formatPriceLabel(created.unit_price_won));
           setEditPrimaryCategory(created.primary_category || PRIMARY_CATEGORIES[0]);
           setEditSecondaryCategory(created.primary_category === '디저트' ? null : (created.secondary_category || SECONDARY_CATEGORIES[0]));
+          // 미리보기를 추가된 메뉴의 카테고리 탭으로 이동
+          const newPrimary = normalizePrimaryCategory(created.primary_category) || 'coffee';
+          setActivePrimaryCategory(newPrimary);
+          if (newPrimary !== 'dessert') {
+            const newSecondary = normalizeCoffeeDetailCategory(created.secondary_category) || 'coffee';
+            setActiveCoffeeDetailCategory(newSecondary);
+          }
           setAddName('');
           setAddPrice('');
           setAddImage(`${assetBase}img/noImage.svg`);
